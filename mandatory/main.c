@@ -17,57 +17,106 @@
 
 #include "philo.h"
 
-static int glob = 0;
-static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t threadDied = PTHREAD_COND_INITIALIZER;
+static pthread_mutex_t threadMutex = PTHREAD_MUTEX_INITIALIZER;
+
+static int totThreads = 0;
+static int numLive = 0;
+
+static int numUnjoined = 0;
+
+enum tsate{
+	TS_ALIVE,
+	TS_TERMINATED,
+	TS_JOINED
+};
+
+static 	struct {
+	pthread_t tid;
+	enum tsate state;
+	int sleepTime;
+} *thread;
 
 static void *
 threadFunc(void *arg)
 {
-	int loops = *((int *) arg);
-	int loc, j, s;
+	long idx = (long) arg;
+	int s;
 
-	for (j = 0; j < loops; ++j)
-	{
-		s = pthread_mutex_lock(&mtx);
-		if (s != 0)
-			exit(EXIT_FAILURE);
-		loc = glob;
-		++loc;
-        glob = loc;
-		s = pthread_mutex_unlock(&mtx);
-		if (s != 0)
-			exit(EXIT_FAILURE);
-	}
+	sleep(thread[idx].sleepTime);
+	printf("Thread %ld terminating\n", idx);
+
+	s = pthread_mutex_lock(&threadMutex);
+	if (s != 0)
+		exit(EXIT_FAILURE);
+
+	numUnjoined++;
+	thread[idx].state = TS_TERMINATED;
+
+	s = pthread_mutex_unlock(&threadMutex);
+	if (s != 0)
+		exit(EXIT_FAILURE);
+	s = pthread_cond_signal(&threadDied);
+
 	return NULL;
 }
 
-
 int main(int argc, char * argv[])
 {
-	pthread_t t1, t2;
-	int loops, s;
+	long s, idx;
 
 	(void) argv;
 	(void) argc;
 
-
-	loops = ft_atoll(argv[1]);
-
-	s = pthread_create(&t1, NULL, threadFunc, &loops);
-	if (s != 0)
-		exit(EXIT_FAILURE);
-	s = pthread_create(&t2, NULL, threadFunc, &loops);
-	if (s != 0)
+	thread = calloc(argc - 1, sizeof(*thread));
+	if (thread == NULL)
 		exit(EXIT_FAILURE);
 
-	s = pthread_join(t1, NULL);
-	if (s != 0)
-		exit(0);
-	s = pthread_join(t2, NULL);
-	if(s !=0)
-		exit(0);
+	for (idx = 0; idx < argc - 1; ++idx)
+	{
+		thread[idx].sleepTime = atoi(argv[idx + 1]);
+		thread[idx].state = TS_ALIVE;
+		s = pthread_create(&thread[idx].tid, NULL, threadFunc, (void *)idx);
+		if(s!=0)
+			exit(EXIT_FAILURE);
+	}
 
-	printf("glob = %d\n", glob);
+	totThreads = argc - 1;
+	numLive = totThreads;
+
+	while (numLive > 0)
+	{
+		s = pthread_mutex_lock(&threadMutex);
+		if (s!=0)
+			exit(EXIT_FAILURE);
+	}
+
+	while(numUnjoined == 0)
+	{
+		s = pthread_cond_wait(&threadDied, &threadMutex);
+		if (s != 0)
+			exit(EXIT_FAILURE);
+	}
+
+	for (idx = 0; idx < totThreads; ++idx)
+	{
+		if (thread[idx].state == TS_TERMINATED)
+		{
+			s = pthread_join(thread[idx].tid, NULL);
+			if(s!=0)
+				exit(EXIT_FAILURE);
+
+			thread[idx].state = TS_JOINED;
+			numLive--;
+			numUnjoined--;
+
+			printf("Reaped thead %ld (numLive=%d)\n", idx, numLive);
+		}
+	}
+
+	s = pthread_mutex_unlock(&threadMutex);
+	if(s!=0)
+		exit(EXIT_FAILURE);
 
 	return (0);
 }
