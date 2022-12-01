@@ -14,6 +14,7 @@
 #define PHILO_PHILO_H
 
 #include <unistd.h>
+#include <sys/time.h>
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
