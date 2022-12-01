@@ -17,43 +17,57 @@
 
 #include "philo.h"
 
+static int glob = 0;
+static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
+
 static void *
 threadFunc(void *arg)
 {
-	char *s = (char *) arg;
-	printf("%s", s);
-	return (void *) strlen(s);
+	int loops = *((int *) arg);
+	int loc, j, s;
+
+	for (j = 0; j < loops; ++j)
+	{
+		s = pthread_mutex_lock(&mtx);
+		if (s != 0)
+			exit(EXIT_FAILURE);
+		loc = glob;
+		++loc;
+        glob = loc;
+		s = pthread_mutex_unlock(&mtx);
+		if (s != 0)
+			exit(EXIT_FAILURE);
+	}
+	return NULL;
 }
+
 
 int main(int argc, char * argv[])
 {
-	pthread_t t1;
-	void *res;
-	int s;
+	pthread_t t1, t2;
+	int loops, s;
+
 	(void) argv;
 	(void) argc;
 
-	s = pthread_create(&t1, NULL, threadFunc, "Hello world\n");
+
+	loops = ft_atoll(argv[1]);
+
+	s = pthread_create(&t1, NULL, threadFunc, &loops);
 	if (s != 0)
-	{
-		printf("error");
-		exit(0);
-	}
-
-	printf("Message from Main()\n");
-	s = pthread_join(t1, &res);
+		exit(EXIT_FAILURE);
+	s = pthread_create(&t2, NULL, threadFunc, &loops);
 	if (s != 0)
-	{
-		printf("error");
+		exit(EXIT_FAILURE);
+
+	s = pthread_join(t1, NULL);
+	if (s != 0)
 		exit(0);
-	}
-	printf("Thread returned %ld\n", (long) res);
+	s = pthread_join(t2, NULL);
+	if(s !=0)
+		exit(0);
 
-	printf("%llmax:%lld\n", LLONG_MAX);
-	printf("%llmin:%lld\n", LLONG_MIN);
-	printf("atoll:%lld\n",atoll(argv[1]));
-	printf("ft_atoll:%lld\n", ft_atoll(argv[1]));
+	printf("glob = %d\n", glob);
 
-
-	exit(EXIT_SUCCESS);
+	return (0);
 }
