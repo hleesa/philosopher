@@ -17,8 +17,11 @@ CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -f
 
 MANDA_SRCS = \
+     arg \
+     ft_atoll \
      main \
      ft_atoll \
+     print \
 
 BONUS_SRCS = \
      env \

@@ -17,57 +17,45 @@
 
 #include "philo.h"
 
-static int glob = 0;
-static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
+//static int glob = 0;
+//static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
+//
+//static void *
+//threadFunc(void *arg)
+//{
+//	int loops = *((int *) arg);
+//	int loc, j, s;
+//
+//	for (j = 0; j < loops; ++j)
+//	{
+//		s = pthread_mutex_lock(&mtx);
+//		if (s != 0)
+//			exit(EXIT_FAILURE);
+//		loc = glob;
+//		++loc;
+//        glob = loc;
+//		s = pthread_mutex_unlock(&mtx);
+//		if (s != 0)
+//			exit(EXIT_FAILURE);
+//	}
+//	return NULL;
+//}
 
-static void *
-threadFunc(void *arg)
+
+void print_t_philo(t_philo philo)
 {
-	int loops = *((int *) arg);
-	int loc, j, s;
-
-	for (j = 0; j < loops; ++j)
-	{
-		s = pthread_mutex_lock(&mtx);
-		if (s != 0)
-			exit(EXIT_FAILURE);
-		loc = glob;
-		++loc;
-        glob = loc;
-		s = pthread_mutex_unlock(&mtx);
-		if (s != 0)
-			exit(EXIT_FAILURE);
-	}
-	return NULL;
+	printf("%lld, %lld, %lld, %lld, %lld\n", philo.number_of_philosophers,
+		   philo.time_to_die, philo.time_to_eat, philo.time_to_sleep,
+		   philo.number_of_times_each_philosopher_must_eat);
 }
 
-
-int main(int argc, char * argv[])
+int	main(int argc, char *argv[])
 {
-	pthread_t t1, t2;
-	int loops, s;
+	t_philo philo;
 
-	(void) argv;
-	(void) argc;
-
-
-	loops = ft_atoll(argv[1]);
-
-	s = pthread_create(&t1, NULL, threadFunc, &loops);
-	if (s != 0)
-		exit(EXIT_FAILURE);
-	s = pthread_create(&t2, NULL, threadFunc, &loops);
-	if (s != 0)
-		exit(EXIT_FAILURE);
-
-	s = pthread_join(t1, NULL);
-	if (s != 0)
-		exit(0);
-	s = pthread_join(t2, NULL);
-	if(s !=0)
-		exit(0);
-
-	printf("glob = %d\n", glob);
-
+	if (!is_right_arg(argc, argv))
+		return (0);
+	philo = input_args(argc, argv);
+	print_t_philo(philo);
 	return (0);
 }

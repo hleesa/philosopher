@@ -18,17 +18,18 @@
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
+#include <stdlib.h>
 
 typedef int t_bool;
-typedef unsigned long long ull;
+typedef long long ll;
 
 typedef struct s_philo
 {
-	ull	number_of_philosophers;
-	ull	time_to_die;
-	ull	time_to_eat;
-	ull	time_to_sleep;
-	ull	number_of_times_each_philosopher_must_eat;
+	ll	number_of_philosophers;
+	ll	time_to_die;
+	ll	time_to_eat;
+	ll	time_to_sleep;
+	ll	number_of_times_each_philosopher_must_eat;
 }	t_philo;
 
 enum e_philo_state
@@ -47,5 +48,7 @@ enum e_bool
 };
 
 long long	ft_atoll(const char *str);
-
+char	**ft_split(char const *s, char c);
+t_bool	is_right_arg(int argc, char *argv[]);
+t_philo	input_args(int argc, char *argv[]);
 #endif //PHILO_PHILO_H
