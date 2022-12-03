@@ -20,16 +20,25 @@
 #include <limits.h>
 
 typedef int t_bool;
-typedef int arg_type;
+typedef unsigned long long ull;
 
 typedef struct s_philo
 {
-	arg_type	number_of_philosophers;
-	arg_type	time_to_die;
-	arg_type time_to_eat;
-	arg_type time_to_sleep;
-	arg_type number_of_times_each_philosopher_must_eat;
+	ull	number_of_philosophers;
+	ull	time_to_die;
+	ull	time_to_eat;
+	ull	time_to_sleep;
+	ull	number_of_times_each_philosopher_must_eat;
 }	t_philo;
+
+enum e_philo_state
+{
+	THINK,
+	FORK,
+	EAT,
+	SLEEP,
+	DIE
+};
 
 enum e_bool
 {

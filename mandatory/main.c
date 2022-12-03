@@ -17,71 +17,57 @@
 
 #include "philo.h"
 
-//static int glob = 0;
-//static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
-//
-//static void *
-//threadFunc(void *arg)
-//{
-//	int loops = *((int *) arg);
-//	int loc, j, s;
-//
-//	for (j = 0; j < loops; ++j)
-//	{
-//		s = pthread_mutex_lock(&mtx);
-//		if (s != 0)
-//			exit(EXIT_FAILURE);
-//		loc = glob;
-//		++loc;
-//        glob = loc;
-//		s = pthread_mutex_unlock(&mtx);
-//		if (s != 0)
-//			exit(EXIT_FAILURE);
-//	}
-//	return NULL;
-//}
+static int glob = 0;
+static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 
-
-//int main(int argc, char * argv[])
-//{
-//	pthread_t t1, t2;
-//	int loops, s;
-//
-//	(void) argv;
-//	(void) argc;
-//
-//
-//	loops = ft_atoll(argv[1]);
-//
-//	s = pthread_create(&t1, NULL, threadFunc, &loops);
-//	if (s != 0)
-//		exit(EXIT_FAILURE);
-//	s = pthread_create(&t2, NULL, threadFunc, &loops);
-//	if (s != 0)
-//		exit(EXIT_FAILURE);
-//
-//	s = pthread_join(t1, NULL);
-//	if (s != 0)
-//		exit(0);
-//	s = pthread_join(t2, NULL);
-//	if(s !=0)
-//		exit(0);
-//
-//	printf("glob = %d\n", glob);
-//
-//	return (0);
-//}
-
-int main()
+static void *
+threadFunc(void *arg)
 {
-	struct timeval time_of_begin, time_of_cur;
+	int loops = *((int *) arg);
+	int loc, j, s;
 
-	gettimeofday(&time_of_begin, NULL);
+	for (j = 0; j < loops; ++j)
+	{
+		s = pthread_mutex_lock(&mtx);
+		if (s != 0)
+			exit(EXIT_FAILURE);
+		loc = glob;
+		++loc;
+        glob = loc;
+		s = pthread_mutex_unlock(&mtx);
+		if (s != 0)
+			exit(EXIT_FAILURE);
+	}
+	return NULL;
+}
 
-	usleep(1000000 * 3);
-	gettimeofday(&time_of_cur, NULL);
-	int timeDiff = (time_of_cur.tv_usec - time_of_begin.tv_usec) / 1000;
-	printf("timeDiff: %d\n", timeDiff);
-	printf("%ld:%d\n", time_of_cur.tv_sec - time_of_begin.tv_sec,
-		   time_of_cur.tv_usec - time_of_begin.tv_usec);
+
+int main(int argc, char * argv[])
+{
+	pthread_t t1, t2;
+	int loops, s;
+
+	(void) argv;
+	(void) argc;
+
+
+	loops = ft_atoll(argv[1]);
+
+	s = pthread_create(&t1, NULL, threadFunc, &loops);
+	if (s != 0)
+		exit(EXIT_FAILURE);
+	s = pthread_create(&t2, NULL, threadFunc, &loops);
+	if (s != 0)
+		exit(EXIT_FAILURE);
+
+	s = pthread_join(t1, NULL);
+	if (s != 0)
+		exit(0);
+	s = pthread_join(t2, NULL);
+	if(s !=0)
+		exit(0);
+
+	printf("glob = %d\n", glob);
+
+	return (0);
 }
