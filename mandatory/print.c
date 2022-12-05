@@ -12,16 +12,14 @@
 
 #include "philo.h"
 
-void print_state(void)
+void print_state(t_thread *philo)
 {
-	// 프로그램 시작 시점에 gettimeofday(&base_time, NULL);
-	struct timeval base_time, cur_time;
-	int num_of_philo = 0;
+	struct timeval cur_time;
 	char *state_to_str[5] = {"is thinking", "has taken a fork", "is eating",
 							 "is sleeping", "died"};
-
 	gettimeofday(&cur_time, NULL);
-	long long time_stamp = (cur_time.tv_usec - base_time.tv_usec) / 1000;
-	printf("%lld %d %s", time_stamp, num_of_philo,
-		   state_to_str[num_of_philo]);
+	long long time_stamp = (cur_time.tv_usec -
+			philo->common_data->base_time.tv_usec) / 1000;
+	printf("%lld %d %s\n", time_stamp, philo->nth_philo + 1,
+		   state_to_str[philo->state]);
 }

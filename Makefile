@@ -18,10 +18,11 @@ RM			= rm -f
 
 MANDA_SRCS = \
      arg \
+     common \
      ft_atoll \
      main \
-     ft_atoll \
      print \
+     thread \
 
 BONUS_SRCS = \
      env \

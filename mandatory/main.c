@@ -10,61 +10,59 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <pthread.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-
 #include "philo.h"
 
-static int glob = 0;
-static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
-
-static void *
-threadFunc(void *arg)
+void	think_philo(t_thread *philo)
 {
-	int loops = *((int *) arg);
-	int loc, j, s;
+	print_state(philo);
+	philo->state = FORK;
+}
 
-	for (j = 0; j < loops; ++j)
+void	eat_philo(t_thread *philo)
+{
+	const int left_fork = philo->nth_philo;
+	const int right_fork = (philo->nth_philo + 1) % philo->common_data->number_of_philosophers;
+
+	pthread_mutex_lock(&philo->common_data->chopstick_mtx[left_fork]);
+	pthread_mutex_lock(&philo->common_data->chopstick_mtx[right_fork]);
+	print_state(philo);
+	print_state(philo);
+	philo->state = EAT;
+	print_state(philo);
+	usleep(philo->common_data->time_to_eat * 1000);
+	philo->state = SLEEP;
+	pthread_mutex_unlock(&philo->common_data->chopstick_mtx[right_fork]);
+	pthread_mutex_unlock(&philo->common_data->chopstick_mtx[left_fork]);
+}
+void	sleep_philo(t_thread *philo)
+{
+	print_state(philo);
+	usleep(philo->common_data->time_to_sleep * 1000);
+	philo->state = THINK;
+}
+
+void *thread_func(void *arg)
+{
+	t_thread *philo = arg;
+	while (TRUE)
 	{
-		s = pthread_mutex_lock(&mtx);
-		if (s != 0)
-			exit(EXIT_FAILURE);
-		loc = glob;
-		++loc;
-        glob = loc;
-		s = pthread_mutex_unlock(&mtx);
-		if (s != 0)
-			exit(EXIT_FAILURE);
+		think_philo(philo);
+		eat_philo(philo);
+		sleep_philo(philo);
 	}
-	return NULL;
 }
 
-
-void print_t_philo(t_philo philo)
-{
-	printf("%lld, %lld, %lld, %lld, %lld\n", philo.number_of_philosophers,
-		   philo.time_to_die, philo.time_to_eat, philo.time_to_sleep,
-		   philo.number_of_times_each_philosopher_must_eat);
-}
 
 int	main(int argc, char *argv[])
 {
-	t_philo		philo_data;
-	pthread_t	*philo;
-	int			i;
+	t_common	common_data;
+	t_thread	*philo;
 
-	if (!is_right_arg(argc, argv))
+	if (init_common_data(argc, argv, &common_data) == -1)
 		return (0);
-	philo_data = input_args(argc, argv);
-	philo = malloc(sizeof(pthread_t) * philo_data.number_of_philosophers);
-	if (philo == NULL)
+	philo = NULL;
+	if (init_philo_thread(philo, &common_data) == -1)
 		return (0);
-	i = -1;
-	while(++i < philo_data.number_of_philosophers)
-	{
-		pthread_create(philo + i, NULL, threadFunc, "threadFunc arg");
-	}
+	// 동적할당 헤제? , pthread_mutex_destroy
 	return (0);
 }

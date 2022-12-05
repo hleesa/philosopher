@@ -19,20 +19,18 @@
 #include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 typedef int t_bool;
 typedef long long ll;
 
-typedef struct s_philo
+enum e_bool
 {
-	ll	number_of_philosophers;
-	ll	time_to_die;
-	ll	time_to_eat;
-	ll	time_to_sleep;
-	ll	number_of_times_each_philosopher_must_eat;
-}	t_philo;
+	FALSE,
+	TRUE
+};
 
-enum e_philo_state
+enum e_tstate
 {
 	THINK,
 	FORK,
@@ -41,14 +39,33 @@ enum e_philo_state
 	DIE
 };
 
-enum e_bool
+typedef struct s_common
 {
-	FALSE,
-	TRUE
-};
+	ll	number_of_philosophers;
+	ll	time_to_die;
+	ll	time_to_eat;
+	ll	time_to_sleep;
+	ll	number_of_times_each_philosopher_must_eat;
+	pthread_mutex_t *chopstick_mtx;
+	struct timeval base_time;
+}	t_common;
+
+typedef struct s_thread
+{
+	pthread_t tid;
+	int nth_philo;
+	enum e_tstate state;
+	t_common *common_data;
+}	t_thread;
+
 
 long long	ft_atoll(const char *str);
-char	**ft_split(char const *s, char c);
 t_bool	is_right_arg(int argc, char *argv[]);
-t_philo	input_args(int argc, char *argv[]);
+t_common	input_args(int argc, char *argv[]);
+int	init_common_data(int argc, char *argv[], t_common *common_data);
+void print_state(t_thread *philo);
+int init_philo_thread(t_thread *philo, t_common *common_data);
+void *thread_func(void *arg);
+
+
 #endif //PHILO_PHILO_H
