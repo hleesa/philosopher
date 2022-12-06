@@ -25,8 +25,17 @@ int init_philo_thread(t_thread *philo, t_common *common_data)
 		philo[i].nth_philo = i;
 		philo[i].state = THINK;
 		philo[i].common_data = common_data;
-//		usleep(50);
+		philo[i].left_fork = i;
+		philo[i].right_fork = (i + 1) % common_data->number_of_philosophers;
+		philo[i].last_ate_msec = get_msec();
+		if (philo[i].last_ate_msec == -1)
+			return (-1);
 		if (pthread_create(&philo[i].tid, NULL, thread_func, (void*)(philo+i)) == -1)
+			return (-1);
+	}
+	for(int i=0; i<philo->common_data->number_of_philosophers; ++i)
+	{
+		if (pthread_join(philo[i].tid, NULL) == -1)
 			return (-1);
 	}
 	return (0);

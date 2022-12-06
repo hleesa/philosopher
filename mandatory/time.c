@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: salee2 <salee2@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/03 17:40:02 by salee2            #+#    #+#             */
-/*   Updated: 2022/12/03 17:40:07 by salee2           ###   ########.fr       */
+/*   Created: 2022/12/06 16:09:23 by salee2            #+#    #+#             */
+/*   Updated: 2022/12/06 16:09:24 by salee2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
-void print_state(t_thread *philo)
+ll	get_msec(void)
 {
-	char *state_to_str[5] = {"is thinking", "has taken a fork", "is eating",
-							 "is sleeping", "died"};
-	const ll cur_msec = get_msec();
+	struct timeval	cur_time;
 
-	if(cur_msec == -1LL)
-		return ;
-	ll time_stamp = cur_msec - philo->common_data->base_msec;
-	printf("%lld %d %s\n", time_stamp, philo->nth_philo + 1,
-		   state_to_str[philo->state]);
+	if (gettimeofday(&cur_time, NULL) == -1)
+		return (-1LL);
+	return (cur_time.tv_sec * 1000LL + cur_time.tv_usec / 1000LL);
 }
+

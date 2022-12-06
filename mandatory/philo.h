@@ -47,13 +47,16 @@ typedef struct s_common
 	ll	time_to_sleep;
 	ll	number_of_times_each_philosopher_must_eat;
 	pthread_mutex_t *chopstick_mtx;
-	struct timeval base_time;
+	ll base_msec;
 }	t_common;
 
 typedef struct s_thread
 {
 	pthread_t tid;
 	int nth_philo;
+	int	left_fork;
+	int right_fork;
+	ll last_ate_msec;
 	enum e_tstate state;
 	t_common *common_data;
 }	t_thread;
@@ -66,6 +69,6 @@ int	init_common_data(int argc, char *argv[], t_common *common_data);
 void print_state(t_thread *philo);
 int init_philo_thread(t_thread *philo, t_common *common_data);
 void *thread_func(void *arg);
-
+ll	get_msec(void);
 
 #endif //PHILO_PHILO_H

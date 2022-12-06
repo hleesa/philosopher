@@ -23,6 +23,7 @@ MANDA_SRCS = \
      main \
      print \
      thread \
+     time \
 
 BONUS_SRCS = \
      env \

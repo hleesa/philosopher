@@ -36,7 +36,8 @@ int	init_common_data(int argc, char *argv[], t_common *common_data)
 	*common_data = input_args(argc, argv);
 	if (init_chopstick_mtx(common_data) == -1)
 		return (-1);
-	if (gettimeofday(&common_data->base_time, NULL) == -1)
+	common_data->base_msec = get_msec();
+	if (common_data->base_msec == -1)
 		return (-1);
 	return (0);
 }
