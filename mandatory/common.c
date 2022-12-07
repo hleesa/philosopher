@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-int	init_chopstick_mtx(t_common *common_philo)
+int	init_chopstick_mtx(t_common_philo *common_philo)
 {
 	int	i;
 
@@ -29,7 +29,7 @@ int	init_chopstick_mtx(t_common *common_philo)
 	return (0);
 }
 
-int	init_common_philo(int argc, char *argv[], t_common *common_philo)
+int	init_common_philo(int argc, char *argv[], t_common_philo *common_philo)
 {
 	if (!is_right_arg(argc, argv))
 		return (-1);

@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   watcher.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: salee2 <salee2@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/28 17:12:42 by salee2            #+#    #+#             */
-/*   Updated: 2022/11/28 17:12:42 by salee2           ###   ########.fr       */
+/*   Created: 2022/12/07 19:17:06 by salee2            #+#    #+#             */
+/*   Updated: 2022/12/07 19:17:07 by salee2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	main(int argc, char *argv[])
+void *life_of_watcher(void *arg)
 {
-	t_common_philo	common_philo;
-	t_philo	*philo;
-	t_wathcer *wathcer;
+	t_wathcer *wathcer = arg;
 
-	if (init_common_philo(argc, argv, &common_philo) == -1)
-		return (0);
-	philo = NULL;
-	if (create_philo(philo, &common_philo) == -1)
-		return (0);
-	wathcer = NULL;
-	if(create_watcher(wathcer, philo) == -1)
-		return (0);
-	return (0);
+	while (TRUE)
+	{
+		if(get_msec() > wathcer->time_to_die + wathcer->philo->last_ate_msec )
+		{
+			wathcer->philo->state = DIE;
+			print_state(wathcer->philo);
+			return (NULL);
+		}
+	}
 }
+

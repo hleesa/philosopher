@@ -39,7 +39,7 @@ enum e_tstate
 	DIE
 };
 
-typedef struct s_common
+typedef struct s_common_philo
 {
 	ll	number_of_philosophers;
 	ll	time_to_die;
@@ -48,9 +48,9 @@ typedef struct s_common
 	ll	number_of_times_each_philosopher_must_eat;
 	pthread_mutex_t *chopstick_mtx;
 	ll base_msec;
-}	t_common;
+}	t_common_philo;
 
-typedef struct s_thread
+typedef struct s_philo
 {
 	pthread_t tid;
 	int nth_philo;
@@ -58,17 +58,25 @@ typedef struct s_thread
 	int right_fork;
 	ll last_ate_msec;
 	enum e_tstate state;
-	t_common *common_philo;
-}	t_thread;
+	t_common_philo *common_philo;
+}	t_philo;
 
+typedef struct s_watcher
+{
+	pthread_t tid;
+	t_philo *philo;
+	ll time_to_die;
+}	t_wathcer;
 
 long long	ft_atoll(const char *str);
 t_bool	is_right_arg(int argc, char *argv[]);
-t_common	input_args(int argc, char *argv[]);
-int	init_common_philo(int argc, char *argv[], t_common *common_philo);
-void print_state(t_thread *philo);
-int create_philo(t_thread *philo, t_common *common_philo);
+t_common_philo	input_args(int argc, char *argv[]);
+int	init_common_philo(int argc, char *argv[], t_common_philo *common_philo);
+void print_state(t_philo *philo);
+int create_philo(t_philo *philo, t_common_philo *common_philo);
 void *life_of_philo(void *arg);
 ll	get_msec(void);
+void *life_of_watcher(void *arg);
+int create_watcher(t_wathcer *wathcer, t_philo *philo);
 
 #endif //PHILO_PHILO_H

@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void print_state(t_thread *philo)
+void print_state(t_philo *philo)
 {
 	const char *state_to_str[5] = {"is thinking", "has taken a fork",
 								   "is eating", "is sleeping", "died"};

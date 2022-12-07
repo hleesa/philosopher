@@ -25,6 +25,8 @@ MANDA_SRCS = \
      philo_thread \
      print \
      time \
+     watcher \
+     watcher_thread \
 
 BONUS_SRCS = \
      env \

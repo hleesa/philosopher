@@ -12,18 +12,19 @@
 
 #include "philo.h"
 
-void	think_philo(t_thread *philo)
+void	think_philo(t_philo *philo)
 {
 	print_state(philo);
 	philo->state = FORK;
 }
 
-void	eat_philo(t_thread *philo)
+void	eat_philo(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->left_fork]);
 	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
 	print_state(philo);
 	print_state(philo);
+	philo->last_ate_msec = get_msec();
 	philo->state = EAT;
 	print_state(philo);
 	usleep(philo->common_philo->time_to_eat * 1000);
@@ -31,7 +32,7 @@ void	eat_philo(t_thread *philo)
 	pthread_mutex_unlock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
 	pthread_mutex_unlock(&philo->common_philo->chopstick_mtx[philo->left_fork]);
 }
-void	sleep_philo(t_thread *philo)
+void	sleep_philo(t_philo *philo)
 {
 	print_state(philo);
 	usleep(philo->common_philo->time_to_sleep * 1000);
@@ -40,7 +41,7 @@ void	sleep_philo(t_thread *philo)
 
 void *life_of_philo(void *arg)
 {
-	t_thread *philo = arg;
+	t_philo *philo = arg;
 
 	while (TRUE)
 	{
