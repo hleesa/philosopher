@@ -58,17 +58,17 @@ typedef struct s_thread
 	int right_fork;
 	ll last_ate_msec;
 	enum e_tstate state;
-	t_common *common_data;
+	t_common *common_philo;
 }	t_thread;
 
 
 long long	ft_atoll(const char *str);
 t_bool	is_right_arg(int argc, char *argv[]);
 t_common	input_args(int argc, char *argv[]);
-int	init_common_data(int argc, char *argv[], t_common *common_data);
+int	init_common_philo(int argc, char *argv[], t_common *common_philo);
 void print_state(t_thread *philo);
-int init_philo_thread(t_thread *philo, t_common *common_data);
-void *thread_func(void *arg);
+int create_philo(t_thread *philo, t_common *common_philo);
+void *life_of_philo(void *arg);
 ll	get_msec(void);
 
 #endif //PHILO_PHILO_H

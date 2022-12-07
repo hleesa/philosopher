@@ -12,16 +12,15 @@
 
 #include "philo.h"
 
-
 void print_state(t_thread *philo)
 {
-	char *state_to_str[5] = {"is thinking", "has taken a fork", "is eating",
-							 "is sleeping", "died"};
+	const char *state_to_str[5] = {"is thinking", "has taken a fork",
+								   "is eating", "is sleeping", "died"};
 	const ll cur_msec = get_msec();
 
 	if(cur_msec == -1LL)
 		return ;
-	ll time_stamp = cur_msec - philo->common_data->base_msec;
+	ll time_stamp = cur_msec - philo->common_philo->base_msec;
 	printf("%lld %d %s\n", time_stamp, philo->nth_philo + 1,
 		   state_to_str[philo->state]);
 }

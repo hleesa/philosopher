@@ -21,8 +21,9 @@ MANDA_SRCS = \
      common \
      ft_atoll \
      main \
+     philo \
+     philo_thread \
      print \
-     thread \
      time \
 
 BONUS_SRCS = \
