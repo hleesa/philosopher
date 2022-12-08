@@ -26,6 +26,7 @@ void	eat_philo(t_philo *philo)
 	print_state(philo);
 	philo->last_ate_msec = get_msec();
 	philo->state = EAT;
+	++philo->num_of_ate;
 	print_state(philo);
 	usleep(philo->common_philo->time_to_eat * 1000);
 	philo->state = SLEEP;

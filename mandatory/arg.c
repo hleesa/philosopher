@@ -22,12 +22,12 @@ t_bool	is_right_argc(int argc)
 t_bool	is_right_argv(int argc, char *argv[])
 {
 	int			i;
-	const int ofs = 1;
+	const int	ofs = 1;
 
 	i = -1;
-	while(++i + ofs < argc)
+	while (++i + ofs < argc)
 	{
-		if(ft_atoll(argv[i + ofs]) == -1)
+		if (ft_atoll(argv[i + ofs]) == -1)
 			return (FALSE);
 	}
 	return (TRUE);
@@ -43,16 +43,14 @@ t_bool	is_right_arg(int argc, char *argv[])
 t_common_philo	input_args(int argc, char *argv[])
 {
 	t_common_philo	ret;
-	ll *pptr;
-	int i;
-	const int ofs = 1;
+	ll				*pptr;
+	int				i;
+	const int		ofs = 1;
 
 	memset(&ret, -1, sizeof(t_common_philo));
 	pptr = (void*)&ret;
 	i = -1;
 	while (++i + ofs < argc)
-	{
 		pptr[i] = ft_atoll(argv[i + ofs]);
-	}
 	return (ret);
 }

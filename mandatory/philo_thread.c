@@ -28,6 +28,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 	i = -1;
 	while (++i < i_end)
 	{
+		philo[i].num_of_ate = 0;
 		philo[i].nth_philo = i;
 		philo[i].state = THINK;
 		philo[i].common_philo = common_philo;

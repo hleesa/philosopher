@@ -20,7 +20,7 @@ int	malloc_watcher_thread(t_watcher **wathcer, int size)
 	return (0);
 }
 
-int	init_watcher_thread(t_watcher *wathcer, t_philo *philo)
+int	init_watcher_thread(t_watcher *wathcer, t_philo *philo, t_common_watcher *common_watcher)
 {
 	int			i;
 	const int	i_end = philo->common_philo->number_of_philosophers;
@@ -31,6 +31,7 @@ int	init_watcher_thread(t_watcher *wathcer, t_philo *philo)
 	{
 		wathcer[i].philo = &philo[i];
 		wathcer[i].time_to_die = time_to_die;
+		wathcer[i].common_watcher = common_watcher;
 	}
 	return (0);
 }
