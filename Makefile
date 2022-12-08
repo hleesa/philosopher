@@ -24,6 +24,7 @@ MANDA_SRCS = \
      philo \
      philo_thread \
      print \
+     thread \
      time \
      watcher \
      watcher_thread \

@@ -44,7 +44,7 @@ int create_philo_thread(t_philo *philo)
 	int i;
 
 	i = -1;
-	while (++i < philo->common_philo->number_of_philosophers)
+	while (++i < philo[0].common_philo->number_of_philosophers)
 	{
 		usleep(1);
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
@@ -59,7 +59,7 @@ int detach_philo_thread(t_philo *philo)
 	int	i;
 
 	i = -1;
-	while (++i < philo->common_philo->number_of_philosophers)
+	while (++i < philo[0].common_philo->number_of_philosophers)
 	{
 		if (pthread_detach(philo[i].tid) == -1)
 			return (-1);

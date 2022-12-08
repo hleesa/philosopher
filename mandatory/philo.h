@@ -66,7 +66,7 @@ typedef struct s_watcher
 	pthread_t tid;
 	t_philo *philo;
 	ll time_to_die;
-}	t_wathcer;
+}	t_watcher;
 
 long long	ft_atoll(const char *str);
 t_bool	is_right_arg(int argc, char *argv[]);
@@ -77,6 +77,18 @@ int create_philo(t_philo *philo, t_common_philo *common_philo);
 void *life_of_philo(void *arg);
 ll	get_msec(void);
 void *life_of_watcher(void *arg);
-int create_watcher(t_wathcer *wathcer, t_philo *philo);
+//int create_watcher(t_watcher *wathcer, t_philo *philo);
+int create_watcher(t_watcher *wathcer, t_philo *philo, t_common_philo *common_philo);
+int	malloc_philo_thread(t_philo **philo, t_common_philo *common_philo);
+int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
+int create_philo_thread(t_philo *philo);
+int detach_philo_thread(t_philo *philo);
+int	malloc_watcher_thread(t_watcher **wathcer, t_common_philo *common_philo);
+int	init_watcher_thread(t_watcher *wathcer, t_philo *philo);
+int create_watcher_thread(t_watcher *wathcer, t_philo *philo);
+int join_watcher_thread(t_watcher *watcher,t_common_philo *common_philo);
+int create_watcher(t_watcher *wathcer, t_philo *philo, t_common_philo *common_philo);
+int create_thread(t_common_philo *common_philo, t_philo *philo, t_watcher *watcher);
+
 
 #endif //PHILO_PHILO_H

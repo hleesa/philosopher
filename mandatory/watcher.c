@@ -14,8 +14,9 @@
 
 void *life_of_watcher(void *arg)
 {
-	t_wathcer *wathcer = arg;
+	t_watcher *wathcer = arg;
 
+	/*
 	while (TRUE)
 	{
 		if(get_msec() > wathcer->time_to_die + wathcer->philo->last_ate_msec )
@@ -24,6 +25,15 @@ void *life_of_watcher(void *arg)
 			print_state(wathcer->philo);
 			return (NULL);
 		}
+	}
+	 */
+
+	int i = 0;
+	while(TRUE)
+	{
+		printf("watcher: %p, %ds\n", &wathcer->tid, i);
+		usleep(1000000);
+		++i;
 	}
 }
 

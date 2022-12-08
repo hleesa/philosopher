@@ -16,15 +16,21 @@ int	main(int argc, char *argv[])
 {
 	t_common_philo	common_philo;
 	t_philo	*philo;
-	t_wathcer *wathcer;
+	t_watcher *watcher;
 
 	if (init_common_philo(argc, argv, &common_philo) == -1)
 		return (0);
 	philo = NULL;
-	if (create_philo(philo, &common_philo) == -1)
-		return (0);
-	wathcer = NULL;
-	if(create_watcher(wathcer, philo) == -1)
-		return (0);
+//	if (create_philo(philo, &common_philo) == -1)
+//		return (0);
+	watcher = NULL;
+//	if(create_watcher(watcher, philo, &common_philo) == -1)
+//		return (0);
+//	while (TRUE)
+//	{
+//
+//	}
+	create_thread(&common_philo, philo, watcher);
+
 	return (0);
 }
