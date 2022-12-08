@@ -24,11 +24,11 @@ void *life_of_watcher(void *arg)
 		{
 			if (get_msec() > wathcer->time_to_die + wathcer->philo->last_ate_msec)
 			{
-				wathcer->philo->state = DIE;
-				print_state(wathcer->philo);
+				print_state(wathcer->philo->common_philo->base_msec,
+							wathcer->philo->nth_philo, DIE);
 				return (NULL);
 			}
-			if (wathcer->philo->num_of_ate >= num_of_must_eat)
+			if (wathcer->philo->num_of_ate == num_of_must_eat)
 			{
 				++wathcer->common_watcher->num_of_eat_all_philo;
 				if (wathcer->common_watcher->num_of_eat_all_philo >= wathcer->philo->common_philo->number_of_philosophers)
@@ -42,8 +42,8 @@ void *life_of_watcher(void *arg)
 		{
 			if (get_msec() > wathcer->time_to_die + wathcer->philo->last_ate_msec)
 			{
-				wathcer->philo->state = DIE;
-				print_state(wathcer->philo);
+				print_state(wathcer->philo->common_philo->base_msec,
+							wathcer->philo->nth_philo, DIE);
 				return (NULL);
 			}
 		}

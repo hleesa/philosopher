@@ -12,7 +12,6 @@
 
 #include "philo.h"
 
-
 int	main(int argc, char *argv[])
 {
 	t_philo				*philo;
@@ -26,5 +25,6 @@ int	main(int argc, char *argv[])
 	watcher = NULL;
 	if (create_thread(&common_philo, philo, &common_watcher, watcher) == -1)
 		return (-1);
+	usleep(1000);
 	return (0);
 }

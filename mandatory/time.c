@@ -12,6 +12,15 @@
 
 #include "philo.h"
 
+void	msleep(ll msec)
+{
+	const ll base_msec = get_msec();
+
+	while(base_msec + msec >= get_msec())
+	{}
+	return ;
+}
+
 ll	get_msec(void)
 {
 	struct timeval	cur_time;

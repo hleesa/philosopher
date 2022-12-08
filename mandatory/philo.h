@@ -82,7 +82,7 @@ t_bool	is_right_arg(int argc, char *argv[]);
 t_common_philo	input_args(int argc, char *argv[]);
 int init_common_data(int argc, char *argv[],
 					 t_common_philo *common_philo, t_common_watcher *watcher);
-void print_state(t_philo *philo);
+void print_state(ll base_time, int nth_philo, enum e_tstate state);
 void *life_of_philo(void *arg);
 ll	get_msec(void);
 void *life_of_watcher(void *arg);
@@ -98,5 +98,7 @@ int create_watcher_thread(t_watcher *wathcer, int i_end);
 int join_watcher_thread(t_watcher *watcher, int i_end);
 
 int create_thread(t_common_philo *common_philo, t_philo *philo, t_common_watcher *common_watcher, t_watcher *watcher);
+
+void	msleep(ll msec);
 
 #endif //PHILO_PHILO_H
