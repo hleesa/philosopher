@@ -14,21 +14,23 @@
 
 int create_thread(t_common_philo *common_philo, t_philo *philo, t_watcher *watcher)
 {
-	if (malloc_philo_thread(&philo, common_philo) == -1)
-		return (-1);
-	if (malloc_watcher_thread(&watcher, common_philo) == -1)
+	const int num_of_philo = common_philo->number_of_philosophers;
+
+	if (malloc_philo_thread(&philo, num_of_philo) == -1)
 		return (-1);
 	if (init_philo_thread(philo, common_philo) == -1)
 		return (-1);
+	if (malloc_watcher_thread(&watcher, num_of_philo) == -1)
+		return (-1);
 	if (init_watcher_thread(watcher, philo) == -1)
 		return (-1);
-	if (create_watcher_thread(watcher, philo) == -1)
+	if (create_watcher_thread(watcher, num_of_philo) == -1)
 		return (-1);
-	if (create_philo_thread(philo) == -1)
+	if (create_philo_thread(philo, num_of_philo) == -1)
 		return (-1);
-	if (detach_philo_thread(philo) == -1)
+	if (detach_philo_thread(philo, num_of_philo) == -1)
 		return (-1);
-	if (join_watcher_thread(watcher, common_philo) == -1)
+	if (join_watcher_thread(watcher, num_of_philo) == -1)
 		return (-1);
 	return (0);
 }

@@ -12,9 +12,9 @@
 
 #include "philo.h"
 
-int	malloc_philo_thread(t_philo **philo, t_common_philo *common_philo)
+int	malloc_philo_thread(t_philo **philo, int size)
 {
-	*philo = malloc(sizeof(t_philo) * common_philo->number_of_philosophers);
+	*philo = malloc(sizeof(t_philo) * size);
 	if (*philo == NULL)
 		return (-1);
 	return (0);
@@ -22,10 +22,11 @@ int	malloc_philo_thread(t_philo **philo, t_common_philo *common_philo)
 
 int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 {
-	int	i;
+	int			i;
+	const int	i_end = common_philo->number_of_philosophers;
 
 	i = -1;
-	while (++i < common_philo->number_of_philosophers)
+	while (++i < i_end)
 	{
 		philo[i].nth_philo = i;
 		philo[i].state = THINK;
@@ -39,12 +40,12 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 	return (0);
 }
 
-int create_philo_thread(t_philo *philo)
+int create_philo_thread(t_philo *philo, int i_end)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while (++i < philo[0].common_philo->number_of_philosophers)
+	while (++i < i_end)
 	{
 		usleep(1);
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
@@ -54,28 +55,15 @@ int create_philo_thread(t_philo *philo)
 	return (0);
 }
 
-int detach_philo_thread(t_philo *philo)
+int detach_philo_thread(t_philo *philo, int i_end)
 {
-	int	i;
+	int			i;
 
 	i = -1;
-	while (++i < philo[0].common_philo->number_of_philosophers)
+	while (++i < i_end)
 	{
 		if (pthread_detach(philo[i].tid) == -1)
 			return (-1);
 	}
-	return (0);
-}
-
-int create_philo(t_philo *philo, t_common_philo *common_philo)
-{
-	if (malloc_philo_thread(&philo, common_philo) == -1)
-		return (-1);
-	if (init_philo_thread(philo, common_philo) == -1)
-		return (-1);
-	if (create_philo_thread(philo) == -1)
-		return (-1);
-	if (detach_philo_thread(philo) == -1)
-		return (-1);
 	return (0);
 }

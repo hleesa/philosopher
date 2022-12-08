@@ -21,15 +21,7 @@ int	main(int argc, char *argv[])
 	if (init_common_philo(argc, argv, &common_philo) == -1)
 		return (0);
 	philo = NULL;
-//	if (create_philo(philo, &common_philo) == -1)
-//		return (0);
 	watcher = NULL;
-//	if(create_watcher(watcher, philo, &common_philo) == -1)
-//		return (0);
-//	while (TRUE)
-//	{
-//
-//	}
 	create_thread(&common_philo, philo, watcher);
 
 	return (0);

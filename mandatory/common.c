@@ -14,14 +14,14 @@
 
 int	init_chopstick_mtx(t_common_philo *common_philo)
 {
-	int	i;
+	int			i;
+	const int	size = common_philo->number_of_philosophers;
 
-	common_philo->chopstick_mtx = malloc(sizeof(pthread_mutex_t) *
-										common_philo->number_of_philosophers);
+	common_philo->chopstick_mtx = malloc(sizeof(pthread_mutex_t) * size);
 	if (common_philo->chopstick_mtx == NULL)
 		return (-1);
 	i = -1;
-	while(++i < common_philo->number_of_philosophers)
+	while(++i < size)
 	{
 		if (pthread_mutex_init(common_philo->chopstick_mtx + i, NULL) == -1)
 			return (-1);

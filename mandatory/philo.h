@@ -77,17 +77,17 @@ int create_philo(t_philo *philo, t_common_philo *common_philo);
 void *life_of_philo(void *arg);
 ll	get_msec(void);
 void *life_of_watcher(void *arg);
-//int create_watcher(t_watcher *wathcer, t_philo *philo);
-int create_watcher(t_watcher *wathcer, t_philo *philo, t_common_philo *common_philo);
-int	malloc_philo_thread(t_philo **philo, t_common_philo *common_philo);
+
+int	malloc_philo_thread(t_philo **philo, int size);
 int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
-int create_philo_thread(t_philo *philo);
-int detach_philo_thread(t_philo *philo);
-int	malloc_watcher_thread(t_watcher **wathcer, t_common_philo *common_philo);
+int create_philo_thread(t_philo *philo, int i_end);
+int detach_philo_thread(t_philo *philo, int i_end);
+
+int	malloc_watcher_thread(t_watcher **wathcer, int size);
 int	init_watcher_thread(t_watcher *wathcer, t_philo *philo);
-int create_watcher_thread(t_watcher *wathcer, t_philo *philo);
-int join_watcher_thread(t_watcher *watcher,t_common_philo *common_philo);
-int create_watcher(t_watcher *wathcer, t_philo *philo, t_common_philo *common_philo);
+int create_watcher_thread(t_watcher *wathcer, int i_end);
+int join_watcher_thread(t_watcher *watcher, int i_end);
+
 int create_thread(t_common_philo *common_philo, t_philo *philo, t_watcher *watcher);
 
 
