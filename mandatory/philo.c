@@ -20,8 +20,6 @@ void	think_philo(t_philo *philo)
 
 void	eat_philo(t_philo *philo)
 {
-	ll t_error = get_usec() - philo->saved_usec;
-
 	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->left_fork]);
 	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
 
@@ -32,10 +30,7 @@ void	eat_philo(t_philo *philo)
 	philo->state = EAT;
 	print_state(philo->common_philo->base_usec, philo->nth_philo, philo->state);
 
-	t_error += get_usec() - philo->saved_usec;
-//	usleep(philo->common_philo->time_to_eat - t_error);
-	my_usleep(philo->common_philo->time_to_eat - t_error);
-
+	my_usleep(philo->common_philo->time_to_eat);
 
 	philo->saved_usec = get_usec();
 	++philo->num_of_ate;
@@ -46,14 +41,7 @@ void	eat_philo(t_philo *philo)
 void	sleep_philo(t_philo *philo)
 {
 	print_state(philo->common_philo->base_usec, philo->nth_philo, philo->state);
-
-	ll t_error = get_usec() - philo->saved_usec;
-
-//	usleep(philo->common_philo->time_to_sleep - t_error);
-	my_usleep(philo->common_philo->time_to_sleep - t_error);
-
-	philo->saved_usec = get_usec();
-
+	my_usleep(philo->common_philo->time_to_sleep);
 	philo->state = THINK;
 }
 
