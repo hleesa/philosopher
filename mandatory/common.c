@@ -36,8 +36,8 @@ int	init_common_philo(int argc, char *argv[], t_common_philo *common_philo)
 	*common_philo = input_args(argc, argv);
 	if (init_chopstick_mtx(common_philo) == -1)
 		return (-1);
-	common_philo->base_msec = get_msec();
-	if (common_philo->base_msec == -1)
+	common_philo->base_usec = get_usec();
+	if (common_philo->base_usec == -1)
 		return (-1);
 	return (0);
 }

@@ -49,8 +49,9 @@ t_common_philo	input_args(int argc, char *argv[])
 
 	memset(&ret, -1, sizeof(t_common_philo));
 	pptr = (void*)&ret;
-	i = -1;
+	i = 0;
+	pptr[i] = ft_atoll(argv[i + ofs]);
 	while (++i + ofs < argc)
-		pptr[i] = ft_atoll(argv[i + ofs]);
+		pptr[i] = ft_atoll(argv[i + ofs]) * 1000LL;
 	return (ret);
 }

@@ -12,15 +12,15 @@
 
 #include "philo.h"
 
-void print_state(ll base_time, int nth_philo, enum e_tstate state)
+void print_state(ll base_usec, int nth_philo, enum e_tstate state)
 {
 	const char *state_to_str[5] = {"is thinking", "has taken a fork",
 								   "is eating", "is sleeping", "died"};
-	const ll cur_msec = get_msec();
+	const ll cur_usec = get_usec();
 
-	if (cur_msec == -1LL)
+	if (cur_usec == -1LL)
 		return ;
-	ll time_stamp = cur_msec - base_time;
-	printf("%lld %d %s\n", time_stamp, nth_philo + 1,
+	ll time_stamp = cur_usec - base_usec;
+	printf("%lld %d %s\n", time_stamp / 1000LL, nth_philo + 1,
 		   state_to_str[state]);
 }

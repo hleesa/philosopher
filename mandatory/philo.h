@@ -47,7 +47,7 @@ typedef struct s_common_philo
 	ll	time_to_sleep;
 	ll	number_of_times_each_philosopher_must_eat;
 	pthread_mutex_t *chopstick_mtx;
-	ll base_msec;
+	ll base_usec;
 }	t_common_philo;
 
 typedef struct s_philo
@@ -57,7 +57,8 @@ typedef struct s_philo
 	int	left_fork;
 	int right_fork;
 	int num_of_ate;
-	ll last_ate_msec;
+	ll last_ate_usec;
+	ll saved_usec;
 	enum e_tstate state;
 	t_common_philo *common_philo;
 }	t_philo;
@@ -82,7 +83,7 @@ t_bool	is_right_arg(int argc, char *argv[]);
 t_common_philo	input_args(int argc, char *argv[]);
 int init_common_data(int argc, char *argv[],
 					 t_common_philo *common_philo, t_common_watcher *watcher);
-void print_state(ll base_time, int nth_philo, enum e_tstate state);
+void print_state(ll base_usec, int nth_philo, enum e_tstate state);
 void *life_of_philo(void *arg);
 ll	get_msec(void);
 void *life_of_watcher(void *arg);
@@ -100,5 +101,7 @@ int join_watcher_thread(t_watcher *watcher, int i_end);
 int create_thread(t_common_philo *common_philo, t_philo *philo, t_common_watcher *common_watcher, t_watcher *watcher);
 
 void	msleep(ll msec);
+void	my_usleep(ll usec);
+ll	get_usec(void);
 
 #endif //PHILO_PHILO_H

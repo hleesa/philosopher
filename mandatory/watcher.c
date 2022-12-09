@@ -22,9 +22,9 @@ void *life_of_watcher(void *arg)
 	{
 		while (TRUE)
 		{
-			if (get_msec() > wathcer->time_to_die + wathcer->philo->last_ate_msec)
+			if (get_usec() > wathcer->time_to_die + wathcer->philo->last_ate_usec)
 			{
-				print_state(wathcer->philo->common_philo->base_msec,
+				print_state(wathcer->philo->common_philo->base_usec,
 							wathcer->philo->nth_philo, DIE);
 				return (NULL);
 			}
@@ -40,9 +40,9 @@ void *life_of_watcher(void *arg)
 	{
 		while (TRUE)
 		{
-			if (get_msec() > wathcer->time_to_die + wathcer->philo->last_ate_msec)
+			if (get_usec() > wathcer->time_to_die + wathcer->philo->last_ate_usec)
 			{
-				print_state(wathcer->philo->common_philo->base_msec,
+				print_state(wathcer->philo->common_philo->base_usec,
 							wathcer->philo->nth_philo, DIE);
 				return (NULL);
 			}
