@@ -59,6 +59,7 @@ typedef struct s_philo
 	int num_of_ate;
 	ll last_ate_usec;
 	ll saved_usec;
+	ll base_usec;
 	enum e_tstate state;
 	t_common_philo *common_philo;
 }	t_philo;
