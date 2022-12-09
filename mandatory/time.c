@@ -16,8 +16,7 @@ void	msleep(ll msec)
 {
 	const ll base_msec = get_msec();
 
-	while(base_msec + msec >= get_msec())
-	{}
+	while(base_msec + msec >= get_msec());
 	return ;
 }
 

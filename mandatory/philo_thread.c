@@ -34,6 +34,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 		philo[i].common_philo = common_philo;
 		philo[i].left_fork = i;
 		philo[i].right_fork = (i + 1) % common_philo->number_of_philosophers;
+		philo[i].base_msec = get_msec();
 		philo[i].last_ate_msec = get_msec();
 		if (philo[i].last_ate_msec == -1)
 			return (-1);

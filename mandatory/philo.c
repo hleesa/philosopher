@@ -20,18 +20,25 @@ void	think_philo(t_philo *philo)
 
 void	eat_philo(t_philo *philo)
 {
+	pthread_mutex_t mtx;
+	pthread_mutex_init(&mtx, NULL);
+
 	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->left_fork]);
 	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
 	print_state(philo->common_philo->base_msec, philo->nth_philo, philo->state);
 	print_state(philo->common_philo->base_msec, philo->nth_philo, philo->state);
+
+	pthread_mutex_lock(&mtx);
 	philo->last_ate_msec = get_msec();
+	pthread_mutex_unlock(&mtx);
+
 	philo->state = EAT;
 	print_state(philo->common_philo->base_msec, philo->nth_philo, philo->state);
 	msleep(philo->common_philo->time_to_eat);
 	++philo->num_of_ate;
 	philo->state = SLEEP;
-	pthread_mutex_unlock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
 	pthread_mutex_unlock(&philo->common_philo->chopstick_mtx[philo->left_fork]);
+	pthread_mutex_unlock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
 }
 void	sleep_philo(t_philo *philo)
 {

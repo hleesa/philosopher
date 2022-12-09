@@ -58,6 +58,7 @@ typedef struct s_philo
 	int right_fork;
 	int num_of_ate;
 	ll last_ate_msec;
+	ll base_msec;
 	enum e_tstate state;
 	t_common_philo *common_philo;
 }	t_philo;
