@@ -48,10 +48,10 @@ int create_philo_thread(t_philo *philo, int i_end)
 	i = -1;
 	while (++i < i_end)
 	{
-		usleep(100);
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
 						   (void *) (philo + i)) == -1)
 			return (-1);
+		usleep(1);
 	}
 	return (0);
 }
