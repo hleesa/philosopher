@@ -47,6 +47,7 @@ typedef struct s_common_philo
 	ll	time_to_sleep;
 	ll	number_of_times_each_philosopher_must_eat;
 	pthread_mutex_t *chopstick_mtx;
+	pthread_mutex_t print_mtx;
 	ll base_usec;
 }	t_common_philo;
 
@@ -58,7 +59,6 @@ typedef struct s_philo
 	int right_fork;
 	int num_of_ate;
 	ll last_ate_usec;
-	ll saved_usec;
 	enum e_tstate state;
 	t_common_philo *common_philo;
 }	t_philo;

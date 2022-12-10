@@ -45,14 +45,22 @@ int create_philo_thread(t_philo *philo, int i_end)
 {
 	int	i;
 
+	pthread_mutex_t start_mtx;
+	pthread_mutex_init(&start_mtx, NULL);
+	pthread_mutex_lock(&start_mtx);
 	i = -1;
 	while (++i < i_end)
 	{
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
 						   (void *) (philo + i)) == -1)
 			return (-1);
-		usleep(1);
 	}
+	philo->common_philo->base_usec = get_usec();
+	for(int i=0; i<i_end; ++i)
+	{
+		philo[i].last_ate_usec = philo->common_philo->base_usec;
+	}
+	pthread_mutex_unlock(&start_mtx);
 	return (0);
 }
 
@@ -63,8 +71,11 @@ int detach_philo_thread(t_philo *philo, int i_end)
 	i = -1;
 	while (++i < i_end)
 	{
-		if (pthread_detach(philo[i].tid) == -1)
+//		if (pthread_detach(philo[i].tid) == -1)
+//			return (-1);
+		if (pthread_join(philo[i].tid, NULL) == -1)
 			return (-1);
+
 	}
 	return (0);
 }

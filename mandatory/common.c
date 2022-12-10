@@ -20,6 +20,8 @@ int	init_chopstick_mtx(t_common_philo *common_philo)
 	common_philo->chopstick_mtx = malloc(sizeof(pthread_mutex_t) * size);
 	if (common_philo->chopstick_mtx == NULL)
 		return (-1);
+	if (pthread_mutex_init(&common_philo->print_mtx, NULL) == -1)
+		return (-1);
 	i = -1;
 	while(++i < size)
 	{

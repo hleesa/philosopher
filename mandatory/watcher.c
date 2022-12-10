@@ -14,24 +14,29 @@
 
 void *life_of_watcher(void *arg)
 {
-	t_watcher *wathcer = arg;
-	t_bool is_must_eat = wathcer->common_watcher->is_must_eat;
-	ll num_of_must_eat = wathcer->philo->common_philo->number_of_times_each_philosopher_must_eat;
+	t_watcher *watcher = arg;
+	t_common_watcher *common_watcher = watcher->common_watcher;
+	t_common_philo *common_philo = watcher->philo->common_philo;
+	t_bool is_must_eat = common_watcher->is_must_eat;
+	ll num_of_must_eat = watcher->philo->common_philo->number_of_times_each_philosopher_must_eat;
 
 	if (is_must_eat)
 	{
 		while (TRUE)
 		{
-			if (get_usec() > wathcer->time_to_die + wathcer->philo->last_ate_usec)
+			if (get_usec() > watcher->time_to_die + watcher->philo->last_ate_usec)
 			{
-				print_state(wathcer->philo->common_philo->base_usec,
-							wathcer->philo->nth_philo, DIE);
+				pthread_mutex_lock(&common_philo->print_mtx);
+				print_state(common_philo->base_usec,
+							watcher->philo->nth_philo, DIE);
+				pthread_mutex_unlock(&common_philo->print_mtx);
+
 				return (NULL);
 			}
-			if (wathcer->philo->num_of_ate == num_of_must_eat)
+			if (watcher->philo->num_of_ate == num_of_must_eat)
 			{
-				++wathcer->common_watcher->num_of_eat_all_philo;
-				if (wathcer->common_watcher->num_of_eat_all_philo >= wathcer->philo->common_philo->number_of_philosophers)
+				++common_watcher->num_of_eat_all_philo;
+				if (common_watcher->num_of_eat_all_philo >= common_philo->number_of_philosophers)
 					return (NULL);
 			}
 		}
@@ -40,13 +45,18 @@ void *life_of_watcher(void *arg)
 	{
 		while (TRUE)
 		{
-			if (get_usec() > wathcer->time_to_die + wathcer->philo->last_ate_usec)
+			if (get_usec() > watcher->time_to_die + watcher->philo->last_ate_usec)
 			{
-				print_state(wathcer->philo->common_philo->base_usec,
-							wathcer->philo->nth_philo, DIE);
+				pthread_mutex_lock(&common_philo->print_mtx);
+				print_state(common_philo->base_usec,
+							watcher->philo->nth_philo, DIE);
+				pthread_mutex_unlock(&common_philo->print_mtx);
 				return (NULL);
 			}
 		}
 	}
+//	(void)arg;
+//	while (TRUE);
+
 }
 
