@@ -40,9 +40,9 @@ int create_watcher_thread(t_watcher *wathcer, int i_end)
 {
 	int	i;
 
-	pthread_mutex_t start_mtx;
-	pthread_mutex_init(&start_mtx, NULL);
-	pthread_mutex_lock(&start_mtx);
+//	pthread_mutex_t start_mtx;
+//	pthread_mutex_init(&start_mtx, NULL);
+//	pthread_mutex_lock(&start_mtx);
 	i = -1;
 	while (++i < i_end)
 	{
@@ -50,7 +50,7 @@ int create_watcher_thread(t_watcher *wathcer, int i_end)
 						   (void *) (wathcer + i)) == -1)
 			return (-1);
 	}
-	pthread_mutex_unlock(&start_mtx);
+//	pthread_mutex_unlock(&start_mtx);
 	return (0);
 }
 
@@ -61,10 +61,10 @@ int join_watcher_thread(t_watcher *watcher, int i_end)
 	i = -1;
 	while (++i < i_end)
 	{
-//		if (pthread_join(watcher[i].tid, NULL) == -1)
-//			return (-1);
-		if (pthread_detach(watcher[i].tid) == -1)
+		if (pthread_join(watcher[i].tid, NULL) == -1)
 			return (-1);
+//		if (pthread_detach(watcher[i].tid) == -1)
+//			return (-1);
 	}
 	return (0);
 }
