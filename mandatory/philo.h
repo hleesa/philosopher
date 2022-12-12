@@ -63,7 +63,8 @@ typedef struct s_philo
 	int				right_fork;
 	int				num_of_eat;
 	ll				last_eat_usec;
-	ll time_error;
+	ll				error_usec;
+	ll				svaed_usec;
 	pthread_t		tid;
 	pthread_mutex_t	last_eat_mtx;
 	pthread_mutex_t	num_of_eat_mtx;

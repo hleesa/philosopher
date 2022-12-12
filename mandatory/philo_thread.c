@@ -25,6 +25,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 	int			i;
 	const int	i_end = common_philo->number_of_philosophers;
 
+	common_philo->base_usec = get_usec();
 	i = -1;
 	while (++i < i_end)
 	{
@@ -38,6 +39,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 		philo[i].left_fork = i;
 		philo[i].right_fork = (i + 1) % common_philo->number_of_philosophers;
 		philo[i].last_eat_usec = get_usec();
+		philo[i].svaed_usec = 0LL;
 		if (philo[i].last_eat_usec == -1)
 			return (EXIT_FAILURE);
 	}
@@ -51,8 +53,7 @@ int create_philo_thread(t_philo *philo, int i_end)
 	i = -1;
 	while (++i < i_end)
 	{
-		philo[i].time_error = get_usec() - philo->common_philo->base_usec;
-		philo[i].last_eat_usec += philo[i].time_error;
+		philo[i].error_usec = (get_usec() - philo->common_philo->base_usec);
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
 						   (void *) (philo + i)))
 			return (EXIT_FAILURE);

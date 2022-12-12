@@ -14,7 +14,7 @@
 
 void	think_philo(t_philo *philo, t_common_philo *common_philo)
 {
-	print_state(common_philo->base_usec, philo->nth_philo, THINK);
+	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, THINK);
 }
 
 void	eat_philo(t_philo *philo, t_common_philo *common_philo)
@@ -22,16 +22,17 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->left_fork]);
 	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->right_fork]);
 
-	print_state(common_philo->base_usec, philo->nth_philo, FORK);
-	print_state(common_philo->base_usec, philo->nth_philo, FORK);
+	philo->svaed_usec = get_usec();
+	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
+	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
 
 	pthread_mutex_lock(&philo->last_eat_mtx);
-	philo->last_eat_usec = get_usec();
+	philo->last_eat_usec = get_usec() + philo->error_usec;
 	pthread_mutex_unlock(&philo->last_eat_mtx);
 
-	print_state(common_philo->base_usec, philo->nth_philo, EAT);
+	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, EAT);
 
-	my_usleep(common_philo->time_to_eat - philo->time_error);
+	my_usleep(common_philo->time_to_eat);
 
 	pthread_mutex_lock(&philo->num_of_eat_mtx);
 	++philo->num_of_eat;
@@ -42,8 +43,8 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 }
 void	sleep_philo(t_philo *philo, t_common_philo *common_philo)
 {
-	print_state(common_philo->base_usec, philo->nth_philo, SLEEP);
-	my_usleep(common_philo->time_to_sleep - philo->time_error);
+	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, SLEEP);
+	my_usleep(common_philo->time_to_sleep);
 }
 
 void *life_of_philo(void *arg)
@@ -56,5 +57,8 @@ void *life_of_philo(void *arg)
 		think_philo(philo, common_philo);
 		eat_philo(philo, common_philo);
 		sleep_philo(philo, common_philo);
+		philo->error_usec +=
+				get_usec() - (philo->svaed_usec + common_philo->time_to_eat +
+				common_philo->time_to_sleep);
 	}
 }
