@@ -28,14 +28,18 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 	i = -1;
 	while (++i < i_end)
 	{
-		philo[i].num_of_ate = 0LL;
+		if (pthread_mutex_init(&philo[i].last_eat_mtx, NULL) == -1)
+			return (-1);
+		if (pthread_mutex_init(&philo[i].num_of_eat_mtx, NULL) == -1)
+			return (-1);
+		philo[i].num_of_eat = 0LL;
 		philo[i].nth_philo = i;
 		philo[i].state = THINK;
 		philo[i].common_philo = common_philo;
 		philo[i].left_fork = i;
 		philo[i].right_fork = (i + 1) % common_philo->number_of_philosophers;
-		philo[i].last_ate_usec = get_usec();
-		if (philo[i].last_ate_usec == -1)
+		philo[i].last_eat_usec = get_usec();
+		if (philo[i].last_eat_usec == -1)
 			return (-1);
 	}
 	return (0);

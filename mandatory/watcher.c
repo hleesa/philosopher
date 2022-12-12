@@ -18,13 +18,14 @@ void *life_of_watcher(void *arg)
 	int i_end = wathcer->philo->common_philo->number_of_philosophers;
 	t_common_philo *common_philo = wathcer->philo->common_philo;
 	t_philo *philo = wathcer->philo;
+	ll time_to_die = common_philo->time_to_die;
 
 	while (TRUE)
 	{
 		for(int i=0; i< i_end; ++i)
 		{
 			if (get_usec() >
-				wathcer->time_to_die + philo[i].last_ate_usec){
+				time_to_die + philo[i].last_eat_usec){
 				print_state(common_philo->base_usec,
 							wathcer->philo->nth_philo, DIE);
 				return (NULL);

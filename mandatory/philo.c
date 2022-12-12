@@ -27,12 +27,19 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 	print_state(common_philo->base_usec, philo->nth_philo, philo->state);
 
 	philo->state = EAT;
-	philo->last_ate_usec = get_usec();
+
+	pthread_mutex_lock(&philo->last_eat_mtx);
+	philo->last_eat_usec = get_usec();
+	pthread_mutex_unlock(&philo->last_eat_mtx);
+
 	print_state(common_philo->base_usec, philo->nth_philo, philo->state);
 
 	my_usleep(common_philo->time_to_eat);
 
-	++philo->num_of_ate;
+	pthread_mutex_lock(&philo->num_of_eat_mtx);
+	++philo->num_of_eat;
+	pthread_mutex_unlock(&philo->num_of_eat_mtx);
+
 	philo->state = SLEEP;
 	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->left_fork]);
 	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->right_fork]);

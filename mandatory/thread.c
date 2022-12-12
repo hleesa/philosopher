@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-int create_thread(t_common_philo *common_philo, t_philo *philo, t_common_watcher *common_watcher, t_watcher *watcher)
+int create_thread(t_common_philo *common_philo, t_philo *philo, t_watcher *watcher)
 {
 	const int num_of_philo = common_philo->number_of_philosophers;
 
@@ -22,15 +22,15 @@ int create_thread(t_common_philo *common_philo, t_philo *philo, t_common_watcher
 		return (-1);
 	if (malloc_watcher_thread(&watcher, num_of_philo) == -1)
 		return (-1);
-	if (init_watcher_thread(watcher, philo, common_watcher) == -1)
+	if (init_watcher_thread(watcher, philo) == -1)
 		return (-1);
-	if (create_watcher_thread(watcher, num_of_philo) == -1)
+	if (create_watcher_thread(watcher) == -1)
 		return (-1);
 	if (create_philo_thread(philo, num_of_philo) == -1)
 		return (-1);
 	if (detach_philo_thread(philo, num_of_philo) == -1)
 		return (-1);
-	if (join_watcher_thread(watcher, num_of_philo) == -1)
+	if (join_watcher_thread(watcher) == -1)
 		return (-1);
 	return (0);
 }
