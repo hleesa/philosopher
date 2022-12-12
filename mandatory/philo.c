@@ -31,7 +31,7 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 
 	print_state(common_philo->base_usec, philo->nth_philo, EAT);
 
-	my_usleep(common_philo->time_to_eat);
+	my_usleep(common_philo->time_to_eat - philo->time_error);
 
 	pthread_mutex_lock(&philo->num_of_eat_mtx);
 	++philo->num_of_eat;
@@ -43,7 +43,7 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 void	sleep_philo(t_philo *philo, t_common_philo *common_philo)
 {
 	print_state(common_philo->base_usec, philo->nth_philo, SLEEP);
-	my_usleep(common_philo->time_to_sleep);
+	my_usleep(common_philo->time_to_sleep - philo->time_error);
 }
 
 void *life_of_philo(void *arg)

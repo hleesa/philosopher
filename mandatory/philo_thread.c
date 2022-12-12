@@ -51,6 +51,8 @@ int create_philo_thread(t_philo *philo, int i_end)
 	i = -1;
 	while (++i < i_end)
 	{
+		philo[i].time_error = get_usec() - philo->common_philo->base_usec;
+		philo[i].last_eat_usec += philo[i].time_error;
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
 						   (void *) (philo + i)))
 			return (EXIT_FAILURE);
