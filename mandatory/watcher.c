@@ -21,9 +21,9 @@ t_bool	is_time_to_die(t_philo *philo, t_common_philo *common_philo)
 	i = -1;
 	while (++i < i_end)
 	{
-		if (get_usec() > time_to_die + philo[i].last_eat_usec)
+		if (get_usec() / 1000LL > (time_to_die + philo[i].last_eat_usec) / 1000LL)
 		{
-			print_state(common_philo->base_usec, philo->nth_philo, DIE);
+			print_state(philo,common_philo->base_usec + philo[i].error_usec, philo->nth_philo, DIE);
 			return (TRUE);
 		}
 	}

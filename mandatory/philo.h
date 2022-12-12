@@ -53,7 +53,8 @@ typedef struct s_common_philo
 	ll				time_to_sleep;
 	ll				number_of_times_each_philosopher_must_eat;
 	ll				base_usec;
-	pthread_mutex_t	*chopstick_mtx;
+    pthread_mutex_t print_mtx;
+    pthread_mutex_t	*chopstick_mtx;
 }	t_common_philo;
 
 typedef struct s_philo
@@ -77,6 +78,7 @@ typedef struct s_watcher
 	t_philo		*philo;
 }	t_watcher;
 
+void print_state(t_philo *philo, ll base_usec, int nth_philo, enum e_tstate state);
 long long		ft_atoll(const char *str);
 t_bool			is_right_arg(int argc, char *argv[]);
 t_common_philo	input_args(int argc, char *argv[]);
@@ -90,7 +92,6 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
 int create_philo_thread(t_philo *philo, int i_end);
 int detach_philo_thread(t_philo *philo, int i_end);
 
-void print_state(ll base_usec, int nth_philo, enum e_tstate state);
 
 int	malloc_watcher_thread(t_watcher **wathcer);
 int	init_watcher_thread(t_watcher *wathcer, t_philo *philo);
