@@ -52,8 +52,8 @@ typedef struct s_common_philo
 	ll	time_to_eat;
 	ll	time_to_sleep;
 	ll	number_of_times_each_philosopher_must_eat;
-	pthread_mutex_t *chopstick_mtx;
 	ll base_usec;
+	pthread_mutex_t *chopstick_mtx;
 }	t_common_philo;
 
 typedef struct s_philo
@@ -64,8 +64,6 @@ typedef struct s_philo
 	int right_fork;
 	int num_of_eat;
 	ll last_eat_usec;
-	ll saved_usec;
-	enum e_tstate state;
 	pthread_mutex_t last_eat_mtx;
 	pthread_mutex_t num_of_eat_mtx;
 	t_common_philo *common_philo;
@@ -75,6 +73,7 @@ typedef struct s_watcher
 {
 	pthread_t tid;
 	t_philo *philo;
+	struct s_watcher *opt;
 }	t_watcher;
 
 long long	ft_atoll(const char *str);
@@ -90,16 +89,17 @@ void *life_of_watcher(void *arg);
 
 int	malloc_philo_thread(t_philo **philo, int size);
 int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
-int create_philo_thread(t_philo *philo, int i_end);
-int detach_philo_thread(t_philo *philo, int i_end);
+int create_philo_thread(t_philo *philo);
+int detach_philo_thread(t_philo *philo);
 
-int	malloc_watcher_thread(t_watcher **wathcer);
+int	malloc_watcher_thread(t_watcher **wathcer, ll num_of_must_eat);
 int	init_watcher_thread(t_watcher *wathcer, t_philo *philo);
 int create_watcher_thread(t_watcher *wathcer);
 int join_watcher_thread(t_watcher *watcher);
 
 int create_thread(t_common_philo *common_philo, t_philo *philo, t_watcher *watcher);
 
+void *life_of_watcher_option(void *arg);
 void	msleep(ll msec);
 void	my_usleep(ll usec);
 ll	get_usec(void);

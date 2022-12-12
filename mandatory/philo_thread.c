@@ -34,7 +34,6 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 			return (-1);
 		philo[i].num_of_eat = 0LL;
 		philo[i].nth_philo = i;
-		philo[i].state = THINK;
 		philo[i].common_philo = common_philo;
 		philo[i].left_fork = i;
 		philo[i].right_fork = (i + 1) % common_philo->number_of_philosophers;
@@ -45,9 +44,10 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 	return (0);
 }
 
-int create_philo_thread(t_philo *philo, int i_end)
+int create_philo_thread(t_philo *philo)
 {
 	int	i;
+	const int	i_end = philo->common_philo->number_of_philosophers;
 
 	i = -1;
 	while (++i < i_end)
@@ -60,15 +60,17 @@ int create_philo_thread(t_philo *philo, int i_end)
 	return (0);
 }
 
-int detach_philo_thread(t_philo *philo, int i_end)
+int detach_philo_thread(t_philo *philo)
 {
 	int			i;
+	const int	i_end = philo->common_philo->number_of_philosophers;
 
 	i = -1;
 	while (++i < i_end)
 	{
 		if (pthread_detach(philo[i].tid) == -1)
 			return (-1);
+
 	}
 	return (0);
 }
