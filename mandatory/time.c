@@ -34,7 +34,11 @@ void	my_usleep(ll usec)
 {
 	const ll base_usec = get_usec();
 
-	while(base_usec + usec >= get_usec());
+//	ll num_of_usleep = usec / 100;
+//	for (int i = 0; i < num_of_usleep; ++i)
+//		usleep(100);
+	while(base_usec + usec >= get_usec())
+		usleep(100);
 	return ;
 }
 

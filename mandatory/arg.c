@@ -14,7 +14,7 @@
 
 t_bool	is_right_argc(int argc)
 {
-	if (argc == 5 || argc == 6)
+	if (argc == MANDA || argc == OPTION)
 		return (TRUE);
 	return (FALSE);
 }

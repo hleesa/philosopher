@@ -12,48 +12,47 @@
 
 #include "philo.h"
 
-void	think_philo(t_philo *philo)
+void	think_philo(t_philo *philo, t_common_philo *common_philo)
 {
-	print_state(philo->common_philo->base_usec, philo->nth_philo, philo->state);
+	print_state(common_philo->base_usec, philo->nth_philo, philo->state);
 	philo->state = FORK;
 }
 
-void	eat_philo(t_philo *philo)
+void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 {
-	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->left_fork]);
-	pthread_mutex_lock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
+	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->left_fork]);
+	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->right_fork]);
 
-	philo->saved_usec = get_usec();
-	print_state(philo->common_philo->base_usec, philo->nth_philo, philo->state);
-	print_state(philo->common_philo->base_usec, philo->nth_philo, philo->state);
-	philo->last_ate_usec = get_usec();
+	print_state(common_philo->base_usec, philo->nth_philo, philo->state);
+	print_state(common_philo->base_usec, philo->nth_philo, philo->state);
+
 	philo->state = EAT;
-	print_state(philo->common_philo->base_usec, philo->nth_philo, philo->state);
+	philo->last_ate_usec = get_usec();
+	print_state(common_philo->base_usec, philo->nth_philo, philo->state);
 
-	my_usleep(philo->common_philo->time_to_eat);
+	my_usleep(common_philo->time_to_eat);
 
-	philo->saved_usec = get_usec();
 	++philo->num_of_ate;
 	philo->state = SLEEP;
-	pthread_mutex_unlock(&philo->common_philo->chopstick_mtx[philo->right_fork]);
-	pthread_mutex_unlock(&philo->common_philo->chopstick_mtx[philo->left_fork]);
+	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->left_fork]);
+	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->right_fork]);
 }
-void	sleep_philo(t_philo *philo)
+void	sleep_philo(t_philo *philo, t_common_philo *common_philo)
 {
-	print_state(philo->common_philo->base_usec, philo->nth_philo, philo->state);
-	my_usleep(philo->common_philo->time_to_sleep);
+	print_state(common_philo->base_usec, philo->nth_philo, philo->state);
+	my_usleep(common_philo->time_to_sleep);
 	philo->state = THINK;
 }
 
 void *life_of_philo(void *arg)
 {
 	t_philo *philo = arg;
+	t_common_philo *common_philo = philo->common_philo;
 
-	philo->saved_usec = get_usec();
 	while (TRUE)
 	{
-		think_philo(philo);
-		eat_philo(philo);
-		sleep_philo(philo);
+		think_philo(philo, common_philo);
+		eat_philo(philo, common_philo);
+		sleep_philo(philo, common_philo);
 	}
 }

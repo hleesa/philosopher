@@ -24,6 +24,12 @@
 typedef int t_bool;
 typedef long long ll;
 
+enum  e_arg
+{
+	MANDA = 5,
+	OPTION = 6
+};
+
 enum e_bool
 {
 	FALSE,
@@ -69,12 +75,17 @@ typedef struct s_common_watcher
 	int	num_of_eat_all_philo;
 }	t_common_watcher;
 
+//typedef struct s_watcher_option
+//{
+//
+//};
 
 typedef struct s_watcher
 {
 	pthread_t tid;
 	t_philo *philo;
 	ll time_to_die;
+	ll usec_error;
 	t_common_watcher *common_watcher;
 }	t_watcher;
 
@@ -93,6 +104,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
 int create_philo_thread(t_philo *philo, int i_end);
 int detach_philo_thread(t_philo *philo, int i_end);
 
+//int	malloc_watcher_thread(t_watcher **wathcer, int size, t_bool is_opt);
 int	malloc_watcher_thread(t_watcher **wathcer, int size);
 int	init_watcher_thread(t_watcher *wathcer, t_philo *philo, t_common_watcher *common_watcher);
 int create_watcher_thread(t_watcher *wathcer, int i_end);

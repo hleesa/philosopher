@@ -28,7 +28,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 	i = -1;
 	while (++i < i_end)
 	{
-		philo[i].num_of_ate = 0;
+		philo[i].num_of_ate = 0LL;
 		philo[i].nth_philo = i;
 		philo[i].state = THINK;
 		philo[i].common_philo = common_philo;
@@ -51,7 +51,7 @@ int create_philo_thread(t_philo *philo, int i_end)
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
 						   (void *) (philo + i)) == -1)
 			return (-1);
-		usleep(1);
+		usleep(10);
 	}
 	return (0);
 }
