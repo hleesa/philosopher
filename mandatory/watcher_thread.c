@@ -12,9 +12,8 @@
 
 #include "philo.h"
 
-int	malloc_watcher_thread(t_watcher **wathcer, int size)
+int	malloc_watcher_thread(t_watcher **wathcer)
 {
-	(void ) size;
 	*wathcer = malloc(sizeof(t_watcher));
 	if (*wathcer == NULL)
 		return (-1);

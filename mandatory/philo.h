@@ -75,7 +75,6 @@ typedef struct s_watcher
 {
 	pthread_t tid;
 	t_philo *philo;
-	struct s_watcher *opt;
 }	t_watcher;
 
 long long	ft_atoll(const char *str);
@@ -94,7 +93,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
 int create_philo_thread(t_philo *philo, int i_end);
 int detach_philo_thread(t_philo *philo, int i_end);
 
-int	malloc_watcher_thread(t_watcher **wathcer, int size);
+int	malloc_watcher_thread(t_watcher **wathcer);
 int	init_watcher_thread(t_watcher *wathcer, t_philo *philo);
 int create_watcher_thread(t_watcher *wathcer);
 int join_watcher_thread(t_watcher *watcher);

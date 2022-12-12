@@ -20,7 +20,7 @@ int create_thread(t_common_philo *common_philo, t_philo *philo, t_watcher *watch
 		return (-1);
 	if (init_philo_thread(philo, common_philo) == -1)
 		return (-1);
-	if (malloc_watcher_thread(&watcher, num_of_philo) == -1)
+	if (malloc_watcher_thread(&watcher) == -1)
 		return (-1);
 	if (init_watcher_thread(watcher, philo) == -1)
 		return (-1);

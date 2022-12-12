@@ -51,7 +51,11 @@ t_common_philo	input_args(int argc, char *argv[])
 	pptr = (void*)&ret;
 	i = 0;
 	pptr[i] = ft_atoll(argv[i + ofs]);
-	while (++i + ofs < argc)
+	while (++i + ofs < MANDA)
 		pptr[i] = ft_atoll(argv[i + ofs]) * 1000LL;
+	if (argc == OPTION)
+		pptr[i] = ft_atoll(argv[i + ofs]);
+	else
+		pptr[i] = -1LL;
 	return (ret);
 }

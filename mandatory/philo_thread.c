@@ -55,7 +55,7 @@ int create_philo_thread(t_philo *philo, int i_end)
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
 						   (void *) (philo + i)) == -1)
 			return (-1);
-		usleep(10);
+		usleep(20);
 	}
 	return (0);
 }

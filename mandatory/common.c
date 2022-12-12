@@ -39,7 +39,7 @@ int	init_common_philo(int argc, char *argv[], t_common_philo *common_philo)
 	common_philo->base_usec = get_usec();
 	if (common_philo->base_usec == -1)
 		return (-1);
-return (0);
+	return (0);
 }
 
 int init_common_data(int argc, char *argv[],
