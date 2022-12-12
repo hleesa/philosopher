@@ -12,39 +12,50 @@
 
 #include "philo.h"
 
+t_bool is_time_to_die(t_philo *philo, t_common_philo *common_philo)
+{
+	int			i;
+	const int	i_end = common_philo->number_of_philosophers;
+	ll			time_to_die = common_philo->time_to_die;
+
+	i = -1;
+	while (++i < i_end)
+	{
+		if (get_usec() > time_to_die + philo[i].last_eat_usec)
+		{
+			print_state(common_philo->base_usec, philo->nth_philo, DIE);
+			return (TRUE);
+		}
+	}
+	return (FALSE);
+}
+
+t_bool is_time_to_finish_eating(t_philo *philo, t_common_philo *common_philo)
+{
+	int			i;
+	const int	i_end = common_philo->number_of_philosophers;
+
+	i = -1;
+	while (++i < i_end)
+	{
+		if (philo[i].num_of_eat < common_philo->number_of_times_each_philosopher_must_eat)
+			return (FALSE);
+	}
+	return (TRUE);
+}
+
 void *life_of_watcher(void *arg)
 {
-	t_watcher *wathcer = arg;
-	t_philo *philo = wathcer->philo;
-	t_common_philo *common_philo = philo->common_philo;
-	ll time_to_die = common_philo->time_to_die;
-	int i_end = common_philo->number_of_philosophers;
+	t_watcher		*wathcer = arg;
+	t_philo			*philo = wathcer->philo;
+	t_common_philo	*common_philo = philo->common_philo;
 
 	while (TRUE)
 	{
-		for(int i=0; i< i_end; ++i)
-		{
-			if (get_usec() >
-				time_to_die + philo[i].last_eat_usec){
-				print_state(common_philo->base_usec,
-							wathcer->philo->nth_philo, DIE);
-				return (NULL);
-			}
-		}
+		if (is_time_to_die(philo, common_philo))
+			return (NULL);
 		if (common_philo->number_of_times_each_philosopher_must_eat != -1)
-		{
-			for(int i=0; i< i_end; ++i)
-			{
-				t_bool is_eat_all = TRUE;
-				if (philo[i].num_of_eat <= common_philo->number_of_times_each_philosopher_must_eat)
-				{
-					is_eat_all = FALSE;
-					break;
-				}
-				if (is_eat_all)
-					return (NULL);
-			}
-		}
+			if (is_time_to_finish_eating(philo, common_philo))
+				return (NULL);
 	}
-
 }

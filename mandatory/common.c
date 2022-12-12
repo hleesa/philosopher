@@ -19,33 +19,25 @@ int	init_chopstick_mtx(t_common_philo *common_philo)
 
 	common_philo->chopstick_mtx = malloc(sizeof(pthread_mutex_t) * size);
 	if (common_philo->chopstick_mtx == NULL)
-		return (-1);
+		return (EXIT_FAILURE);
 	i = -1;
 	while(++i < size)
 	{
-		if (pthread_mutex_init(common_philo->chopstick_mtx + i, NULL) == -1)
-			return (-1);
+		if (pthread_mutex_init(common_philo->chopstick_mtx + i, NULL))
+			return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	init_common_philo(int argc, char *argv[], t_common_philo *common_philo)
 {
 	if (!is_right_arg(argc, argv))
-		return (-1);
+		return (EXIT_FAILURE);
 	*common_philo = input_args(argc, argv);
-	if (init_chopstick_mtx(common_philo) == -1)
-		return (-1);
+	if (init_chopstick_mtx(common_philo))
+		return (EXIT_FAILURE);
 	common_philo->base_usec = get_usec();
 	if (common_philo->base_usec == -1)
-		return (-1);
-	return (0);
-}
-
-int init_common_data(int argc, char *argv[],
-				 t_common_philo *common_philo)
-{
-	if (init_common_philo(argc, argv, common_philo) == -1)
-		return (-1);
-	return (0);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

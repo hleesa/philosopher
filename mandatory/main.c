@@ -18,12 +18,12 @@ int	main(int argc, char *argv[])
 	t_common_philo		common_philo;
 	t_watcher			*watcher;
 
-	if (init_common_data(argc, argv, &common_philo) == -1)
-		return (-1);
+	if (init_common_philo(argc, argv, &common_philo))
+		return (EXIT_FAILURE);
 	philo = NULL;
 	watcher = NULL;
 	if (create_thread(&common_philo, philo, watcher) == -1)
 		return (-1);
-	usleep(1000);
+	usleep(common_philo.number_of_philosophers * 500);
 	return (0);
 }

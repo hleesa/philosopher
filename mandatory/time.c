@@ -12,24 +12,6 @@
 
 #include "philo.h"
 
-//void	msleep(ll msec)
-//{
-//	const ll base_msec = get_msec();
-//
-//	while(base_msec + msec >= get_msec())
-//	{}
-//	return ;
-//}
-
-//ll	get_msec(void)
-//{
-//	struct timeval	cur_time;
-//
-//	if (gettimeofday(&cur_time, NULL) == -1)
-//		return (-1LL);
-//	return (cur_time.tv_sec * 1000LL + cur_time.tv_usec / 1000LL);
-//}
-
 void	my_usleep(ll usec)
 {
 	const ll base_usec = get_usec();
@@ -38,7 +20,6 @@ void	my_usleep(ll usec)
 		usleep(50);
 	return ;
 }
-
 
 ll	get_usec(void)
 {

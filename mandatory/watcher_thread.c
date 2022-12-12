@@ -16,27 +16,27 @@ int	malloc_watcher_thread(t_watcher **wathcer)
 {
 	*wathcer = malloc(sizeof(t_watcher));
 	if (*wathcer == NULL)
-		return (-1);
-	return (0);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	init_watcher_thread(t_watcher *wathcer, t_philo *philo)
 {
 	wathcer->philo = philo;
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int create_watcher_thread(t_watcher *wathcer)
 {
 	if (pthread_create(&wathcer->tid, NULL, life_of_watcher,
-					   (void *) (wathcer)) == -1)
-		return (-1);
-	return (0);
+					   (void *) (wathcer)))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int join_watcher_thread(t_watcher *watcher)
 {
-	if (pthread_join(watcher->tid, NULL) == -1)
-		return (-1);
-	return (0);
+	if (pthread_join(watcher->tid, NULL))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

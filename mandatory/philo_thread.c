@@ -16,8 +16,8 @@ int	malloc_philo_thread(t_philo **philo, int size)
 {
 	*philo = malloc(sizeof(t_philo) * size);
 	if (*philo == NULL)
-		return (-1);
-	return (0);
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
 
 int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
@@ -28,21 +28,20 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo)
 	i = -1;
 	while (++i < i_end)
 	{
-		if (pthread_mutex_init(&philo[i].last_eat_mtx, NULL) == -1)
-			return (-1);
-		if (pthread_mutex_init(&philo[i].num_of_eat_mtx, NULL) == -1)
-			return (-1);
+		if (pthread_mutex_init(&philo[i].last_eat_mtx, NULL))
+			return (EXIT_FAILURE);
+		if (pthread_mutex_init(&philo[i].num_of_eat_mtx, NULL))
+			return (EXIT_FAILURE);
 		philo[i].num_of_eat = 0LL;
 		philo[i].nth_philo = i;
-		philo[i].state = THINK;
 		philo[i].common_philo = common_philo;
 		philo[i].left_fork = i;
 		philo[i].right_fork = (i + 1) % common_philo->number_of_philosophers;
 		philo[i].last_eat_usec = get_usec();
 		if (philo[i].last_eat_usec == -1)
-			return (-1);
+			return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int create_philo_thread(t_philo *philo, int i_end)
@@ -53,22 +52,22 @@ int create_philo_thread(t_philo *philo, int i_end)
 	while (++i < i_end)
 	{
 		if (pthread_create(&philo[i].tid, NULL, life_of_philo,
-						   (void *) (philo + i)) == -1)
-			return (-1);
-		usleep(20);
+						   (void *) (philo + i)))
+			return (EXIT_FAILURE);
+		usleep(42);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int detach_philo_thread(t_philo *philo, int i_end)
 {
-	int			i;
+	int	i;
 
 	i = -1;
 	while (++i < i_end)
 	{
-		if (pthread_detach(philo[i].tid) == -1)
-			return (-1);
+		if (pthread_detach(philo[i].tid))
+			return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
