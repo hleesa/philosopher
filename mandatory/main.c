@@ -24,6 +24,6 @@ int	main(int argc, char *argv[])
 	watcher = NULL;
 	if (create_thread(&common_philo, philo, watcher) == -1)
 		return (-1);
-	usleep(common_philo.number_of_philosophers * 500);
+	usleep(common_philo.number_of_philosophers * 700);
 	return (0);
 }

@@ -88,7 +88,7 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
 int create_philo_thread(t_philo *philo, int i_end);
 int detach_philo_thread(t_philo *philo, int i_end);
 
-void print_state(ll base_usec, int nth_philo, enum e_tstate state);
+void print_state(ll base_usec, int nth_philo, const char *str);
 
 int	malloc_watcher_thread(t_watcher **wathcer);
 int	init_watcher_thread(t_watcher *wathcer, t_philo *philo);
