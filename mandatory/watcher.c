@@ -15,48 +15,23 @@
 void *life_of_watcher(void *arg)
 {
 	t_watcher *watcher = arg;
-	t_common_watcher *common_watcher = watcher->common_watcher;
 	t_common_philo *common_philo = watcher->philo->common_philo;
-	t_bool is_must_eat = common_watcher->is_must_eat;
-	ll num_of_must_eat = watcher->philo->common_philo->number_of_times_each_philosopher_must_eat;
+	int i_end = common_philo->number_of_philosophers;
+	t_philo *philo = watcher->philo;
 
-	if (is_must_eat)
+	while (TRUE)
 	{
-		while (TRUE)
+		for(int i=0; i<i_end; ++i)
 		{
-			if (get_usec() > watcher->time_to_die + watcher->philo->last_ate_usec)
+			if (get_usec() >watcher->time_to_die + philo[i].last_ate_usec)
 			{
 				pthread_mutex_lock(&common_philo->print_mtx);
 				print_state(common_philo->base_usec,
-							watcher->philo->nth_philo, DIE);
-				pthread_mutex_unlock(&common_philo->print_mtx);
-
-				return (NULL);
-			}
-			if (watcher->philo->num_of_ate == num_of_must_eat)
-			{
-				++common_watcher->num_of_eat_all_philo;
-				if (common_watcher->num_of_eat_all_philo >= common_philo->number_of_philosophers)
-					return (NULL);
-			}
-		}
-	}
-	else
-	{
-		while (TRUE)
-		{
-			if (get_usec() > watcher->time_to_die + watcher->philo->last_ate_usec)
-			{
-				pthread_mutex_lock(&common_philo->print_mtx);
-				print_state(common_philo->base_usec,
-							watcher->philo->nth_philo, DIE);
+							philo->nth_philo, DIE);
 				pthread_mutex_unlock(&common_philo->print_mtx);
 				return (NULL);
 			}
 		}
 	}
-//	(void)arg;
-//	while (TRUE);
-
 }
 

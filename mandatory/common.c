@@ -44,20 +44,19 @@ int	init_common_philo(int argc, char *argv[], t_common_philo *common_philo)
 	return (0);
 }
 
-void	init_common_watcher(int argc, t_common_watcher *common_watcher)
-{
-	if (argc == 6)
-		common_watcher->is_must_eat = TRUE;
-	else
-		common_watcher->is_must_eat = FALSE;
-	common_watcher->num_of_eat_all_philo = 0;
-}
+//void	init_common_watcher(int argc, t_common_watcher *common_watcher)
+//{
+//	if (argc == 6)
+//		common_watcher->is_must_eat = TRUE;
+//	else
+//		common_watcher->is_must_eat = FALSE;
+//	common_watcher->num_of_eat_all_philo = 0;
+//}
 
-int init_common_data(int argc, char *argv[],
-				 t_common_philo *common_philo, t_common_watcher *watcher)
+int init_common_data(int argc, char *argv[], t_common_philo *common_philo)
 {
 	if (init_common_philo(argc, argv, common_philo) == -1)
 		return (-1);
-	init_common_watcher(argc, watcher);
+//	init_common_watcher(argc, watcher);
 	return (0);
 }
