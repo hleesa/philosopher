@@ -21,6 +21,6 @@ void print_state(ll base_usec, int nth_philo, enum e_tstate state)
 	if (cur_usec == -1LL)
 		return ;
 	ll time_stamp = cur_usec - base_usec;
-	printf("%lld %d %s\n", time_stamp / 1000LL, nth_philo + 1,
+	printf("%lld %d %s\n", time_stamp, nth_philo + 1,
 		   state_to_str[state]);
 }

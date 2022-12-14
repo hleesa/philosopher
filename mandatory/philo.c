@@ -26,11 +26,11 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
 	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
 
+	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, EAT);
+
 	pthread_mutex_lock(&philo->last_eat_mtx);
 	philo->last_eat_usec = get_usec() + philo->error_usec;
 	pthread_mutex_unlock(&philo->last_eat_mtx);
-
-	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, EAT);
 
 	my_usleep(common_philo->time_to_eat);
 
@@ -40,9 +40,11 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 
 	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->left_fork]);
 	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->right_fork]);
+
 }
 void	sleep_philo(t_philo *philo, t_common_philo *common_philo)
 {
+	philo->svaed_usec = get_usec();
 	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, SLEEP);
 	my_usleep(common_philo->time_to_sleep);
 }
@@ -56,9 +58,10 @@ void *life_of_philo(void *arg)
 	{
 		think_philo(philo, common_philo);
 		eat_philo(philo, common_philo);
+		philo->error_usec +=
+				(get_usec() - (philo->svaed_usec + common_philo->time_to_eat)) % common_philo->time_to_eat;
 		sleep_philo(philo, common_philo);
 		philo->error_usec +=
-				get_usec() - (philo->svaed_usec + common_philo->time_to_eat +
-				common_philo->time_to_sleep);
+				(get_usec() - (philo->svaed_usec + common_philo->time_to_sleep)) % common_philo->time_to_sleep;
 	}
 }

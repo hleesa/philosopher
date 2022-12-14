@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-t_bool	is_time_to_die(t_philo *philo, t_common_philo *common_philo)
+t_bool	is_time_to_die(t_philo *philo, t_common_philo *common_philo, int* nth_philo)
 {
 	int			i;
 	const int	i_end = common_philo->number_of_philosophers;
@@ -21,9 +21,9 @@ t_bool	is_time_to_die(t_philo *philo, t_common_philo *common_philo)
 	i = -1;
 	while (++i < i_end)
 	{
-		if (get_usec() > time_to_die + philo[i].last_eat_usec)
+		if (get_usec() / 1000LL >  (time_to_die + philo[i].last_eat_usec) / 1000LL)
 		{
-			print_state(common_philo->base_usec, philo->nth_philo, DIE);
+			*nth_philo = i;
 			return (TRUE);
 		}
 	}
@@ -55,10 +55,14 @@ void	*life_of_watcher(void *arg)
 	watcher = arg;
 	philo = watcher->philo;
 	common_philo = philo->common_philo;
+	int nth_philo;
 	while (TRUE)
 	{
-		if (is_time_to_die(philo, common_philo))
+		if (is_time_to_die(philo, common_philo, &nth_philo))
+		{
+			print_state(common_philo->base_usec, nth_philo, DIE);
 			return (NULL);
+		}
 		if (common_philo->number_of_times_each_philosopher_must_eat != -1)
 			if (is_time_to_finish_eating(philo, common_philo))
 				return (NULL);

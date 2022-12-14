@@ -22,8 +22,8 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	philo = NULL;
 	watcher = NULL;
-	if (create_thread(&common_philo, philo, watcher) == -1)
-		return (-1);
+	if (create_thread(&common_philo, philo, watcher))
+		return (EXIT_FAILURE);
 	usleep(common_philo.number_of_philosophers * 500);
 	return (0);
 }
