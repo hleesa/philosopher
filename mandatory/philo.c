@@ -22,7 +22,6 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->left_fork]);
 	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->right_fork]);
 
-	philo->svaed_usec = get_usec();
 	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
 	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
 
@@ -44,7 +43,6 @@ void	eat_philo(t_philo *philo, t_common_philo *common_philo)
 }
 void	sleep_philo(t_philo *philo, t_common_philo *common_philo)
 {
-	philo->svaed_usec = get_usec();
 	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, SLEEP);
 	my_usleep(common_philo->time_to_sleep);
 }
@@ -58,10 +56,10 @@ void *life_of_philo(void *arg)
 	{
 		think_philo(philo, common_philo);
 		eat_philo(philo, common_philo);
-		philo->error_usec +=
-				(get_usec() - (philo->svaed_usec + common_philo->time_to_eat)) % common_philo->time_to_eat;
+
 		sleep_philo(philo, common_philo);
-		philo->error_usec +=
-				(get_usec() - (philo->svaed_usec + common_philo->time_to_sleep)) % common_philo->time_to_sleep;
+		philo->error_usec += (get_usec() - common_philo->base_usec) % 222;
+
+//		printf("p[%d].error_usec:%lld, cur_usec:%lld\n", philo->nth_philo, philo->error_usec, get_usec() -common_philo->base_usec);
 	}
 }
