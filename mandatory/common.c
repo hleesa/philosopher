@@ -26,6 +26,7 @@ int	init_chopstick_mtx(t_common_philo *common_philo)
 		if (pthread_mutex_init(common_philo->chopstick_mtx + i, NULL))
 			return (EXIT_FAILURE);
 	}
+	pthread_mutex_init(&common_philo->print_mtx, NULL);
 	return (EXIT_SUCCESS);
 }
 

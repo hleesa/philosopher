@@ -53,6 +53,7 @@ typedef struct s_common_philo
 	ll				time_to_sleep;
 	ll				number_of_times_each_philosopher_must_eat;
 	ll				base_usec;
+	pthread_mutex_t print_mtx;
 	pthread_mutex_t	*chopstick_mtx;
 }	t_common_philo;
 
