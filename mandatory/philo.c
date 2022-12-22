@@ -54,6 +54,13 @@ void	*life_of_philo(void *arg)
 
 	philo = arg;
 	common = philo->common;
+	if (common->number_of_philosophers == 1)
+	{
+		print_state(philo, common, FORK);
+		my_usleep(common->time_to_die);
+		print_state(philo, common, DIE);
+		return (NULL);
+	}
 	while (TRUE)
 	{
 		if (think_philo(philo, common))
