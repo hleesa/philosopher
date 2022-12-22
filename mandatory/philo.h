@@ -10,21 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_PHILO_H
-#define PHILO_PHILO_H
+#ifndef PHILO_H
+# define PHILO_H
 
-#include <unistd.h>
-#include <sys/time.h>
-#include <string.h>
-#include <stdio.h>
-#include <limits.h>
-#include <stdlib.h>
-#include <pthread.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <string.h>
+# include <stdio.h>
+# include <limits.h>
+# include <stdlib.h>
+# include <pthread.h>
 
-typedef int t_bool;
-typedef long long ll;
+typedef int			t_bool;
+typedef long long	t_ll;
 
-enum  e_arg
+enum e_arg
 {
 	MANDA = 5,
 	OPTION = 6
@@ -47,13 +47,15 @@ enum e_tstate
 
 typedef struct s_common_philo
 {
-	ll				number_of_philosophers;
-	ll				time_to_die;
-	ll				time_to_eat;
-	ll				time_to_sleep;
-	ll				number_of_times_each_philosopher_must_eat;
-	ll				base_usec;
-	pthread_mutex_t	*chopstick_mtx;
+	t_ll			number_of_philosophers;
+	t_ll			time_to_die;
+	t_ll			time_to_eat;
+	t_ll			time_to_sleep;
+	t_ll			number_of_times_each_philosopher_must_eat;
+	t_ll			base_usec;
+	t_bool			is_end;
+	pthread_mutex_t	end_mtx;
+	pthread_mutex_t	*fork_mtx;
 }	t_common_philo;
 
 typedef struct s_philo
@@ -62,45 +64,30 @@ typedef struct s_philo
 	int				left_fork;
 	int				right_fork;
 	int				num_of_eat;
-	ll				last_eat_usec;
-	ll				error_usec;
-	ll				svaed_usec;
+	t_ll			last_eat_usec;
+	t_ll			error_usec;
+	t_ll			saved_usec;
 	pthread_t		tid;
 	pthread_mutex_t	last_eat_mtx;
 	pthread_mutex_t	num_of_eat_mtx;
-	t_common_philo	*common_philo;
+	t_common_philo	*common;
 }	t_philo;
 
-typedef struct s_watcher
-{
-	pthread_t	tid;
-	t_philo		*philo;
-}	t_watcher;
-
-long long		ft_atoll(const char *str);
 t_bool			is_right_arg(int argc, char *argv[]);
 t_common_philo	input_args(int argc, char *argv[]);
-int				init_common_philo(int argc, char *argv[], t_common_philo *common_philo);
-
+int				init_common_philo(int argc, char *argv[], \
+t_common_philo *common);
+long long		ft_atoll(const char *str);
 void			*life_of_philo(void *arg);
-void			*life_of_watcher(void *arg);
+int				malloc_philo_thread(t_philo **philo, int size);
+int				init_philo_thread(t_philo *philo, t_common_philo *common);
+int				create_philo_thread(t_philo *philo, t_common_philo *common);
+int				join_philo_thread(t_philo *philo, int i_end);
+int				print_state(t_philo *philo, t_common_philo *common, \
+enum e_tstate state);
+int				life_of_watcher(t_philo *philo, t_common_philo *common);
+int				create_thread(t_philo *philo, t_common_philo *common);
+void			my_usleep(t_ll usec);
+t_ll			get_usec(void);
 
-int	malloc_philo_thread(t_philo **philo, int size);
-int	init_philo_thread(t_philo *philo, t_common_philo *common_philo);
-int create_philo_thread(t_philo *philo, int i_end);
-int detach_philo_thread(t_philo *philo, int i_end);
-
-void print_state(ll base_usec, int nth_philo, enum e_tstate state);
-
-int	malloc_watcher_thread(t_watcher **wathcer);
-int	init_watcher_thread(t_watcher *wathcer, t_philo *philo);
-int create_watcher_thread(t_watcher *wathcer);
-int join_watcher_thread(t_watcher *watcher);
-
-int create_thread(t_common_philo *common_philo, t_philo *philo, t_watcher *watcher);
-
-void	msleep(ll msec);
-void	my_usleep(ll usec);
-ll	get_usec(void);
-
-#endif //PHILO_PHILO_H
+#endif //PHILO_H

@@ -12,59 +12,65 @@
 
 #include "philo.h"
 
-t_bool	is_time_to_die(t_philo *philo, t_common_philo *common_philo, int* nth_philo)
+t_bool	is_time_to_die(t_philo *philo, t_common_philo *common)
 {
 	int			i;
-	const int	i_end = common_philo->number_of_philosophers;
-	const ll	time_to_die = common_philo->time_to_die;
+	const int	i_end = common->number_of_philosophers;
+	const t_ll	time_to_die = common->time_to_die;
 
 	i = -1;
 	while (++i < i_end)
 	{
-		if (get_usec() / 1000LL >  (time_to_die + philo[i].last_eat_usec) / 1000LL)
+		pthread_mutex_lock(&philo[i].last_eat_mtx);
+		if (get_usec() > (time_to_die + philo[i].last_eat_usec))
 		{
-			*nth_philo = i;
+			print_state(philo, common, DIE);
+			pthread_mutex_unlock(&philo[i].last_eat_mtx);
 			return (TRUE);
 		}
+		pthread_mutex_unlock(&philo[i].last_eat_mtx);
 	}
 	return (FALSE);
 }
 
-t_bool	is_time_to_finish_eating(t_philo *philo, t_common_philo *common_philo)
+t_bool	is_time_to_finish_eating(t_philo *philo, t_common_philo *common)
 {
 	int			i;
 	int			num_of_must_eat;
-	const int	i_end = common_philo->number_of_philosophers;
+	const int	i_end = common->number_of_philosophers;
 
-	num_of_must_eat = common_philo->number_of_times_each_philosopher_must_eat;
+	num_of_must_eat = common->number_of_times_each_philosopher_must_eat;
 	i = -1;
 	while (++i < i_end)
 	{
+		pthread_mutex_lock(&philo[i].num_of_eat_mtx);
 		if (philo[i].num_of_eat < num_of_must_eat)
+		{
+			pthread_mutex_unlock(&philo[i].num_of_eat_mtx);
 			return (FALSE);
+		}
+		pthread_mutex_unlock(&philo[i].num_of_eat_mtx);
 	}
+	pthread_mutex_lock(&common->end_mtx);
+	common->is_end = TRUE;
+	pthread_mutex_unlock(&common->end_mtx);
 	return (TRUE);
 }
 
-void	*life_of_watcher(void *arg)
+int	life_of_watcher(t_philo *philo, t_common_philo *common)
 {
-	t_watcher		*watcher;
-	t_philo			*philo;
-	t_common_philo	*common_philo;
-
-	watcher = arg;
-	philo = watcher->philo;
-	common_philo = philo->common_philo;
-	int nth_philo;
 	while (TRUE)
 	{
-		if (is_time_to_die(philo, common_philo, &nth_philo))
+		if (is_time_to_die(philo, common))
+			break ;
+		if (common->number_of_times_each_philosopher_must_eat != -1)
 		{
-			print_state(common_philo->base_usec, nth_philo, DIE);
-			return (NULL);
+			if (is_time_to_finish_eating(philo, common))
+				break ;
 		}
-		if (common_philo->number_of_times_each_philosopher_must_eat != -1)
-			if (is_time_to_finish_eating(philo, common_philo))
-				return (NULL);
+		usleep(300);
 	}
+	if (join_philo_thread(philo, common->number_of_philosophers))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }

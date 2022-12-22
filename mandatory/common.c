@@ -12,32 +12,33 @@
 
 #include "philo.h"
 
-int	init_chopstick_mtx(t_common_philo *common_philo)
+int	init_fork_mtx(t_common_philo *common)
 {
 	int			i;
-	const int	size = common_philo->number_of_philosophers;
+	const int	size = common->number_of_philosophers;
 
-	common_philo->chopstick_mtx = malloc(sizeof(pthread_mutex_t) * size);
-	if (common_philo->chopstick_mtx == NULL)
+	common->fork_mtx = malloc(sizeof(pthread_mutex_t) * size);
+	if (common->fork_mtx == NULL)
 		return (EXIT_FAILURE);
 	i = -1;
-	while(++i < size)
+	while (++i < size)
 	{
-		if (pthread_mutex_init(common_philo->chopstick_mtx + i, NULL))
+		if (pthread_mutex_init(common->fork_mtx + i, NULL))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	init_common_philo(int argc, char *argv[], t_common_philo *common_philo)
+int	init_common_philo(int argc, char *argv[], t_common_philo *common)
 {
 	if (!is_right_arg(argc, argv))
 		return (EXIT_FAILURE);
-	*common_philo = input_args(argc, argv);
-	if (init_chopstick_mtx(common_philo))
+	*common = input_args(argc, argv);
+	common->base_usec = get_usec();
+	common->is_end = FALSE;
+	if (pthread_mutex_init(&common->end_mtx, NULL))
 		return (EXIT_FAILURE);
-	common_philo->base_usec = get_usec();
-	if (common_philo->base_usec == -1)
+	if (init_fork_mtx(common))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

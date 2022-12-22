@@ -12,20 +12,19 @@
 
 #include "philo.h"
 
-void	my_usleep(ll usec)
+void	my_usleep(t_ll usec)
 {
-	const ll base_usec = get_usec();
+	const t_ll	base_usec = get_usec();
 
-	while(base_usec + usec >= get_usec())
-		usleep(50);
+	while (base_usec + usec >= get_usec())
+		usleep(100);
 	return ;
 }
 
-ll	get_usec(void)
+t_ll	get_usec(void)
 {
 	struct timeval	cur_time;
 
-	if (gettimeofday(&cur_time, NULL) == -1)
-		return (-1LL);
+	gettimeofday(&cur_time, NULL);
 	return (cur_time.tv_sec * 1000000LL + cur_time.tv_usec);
 }

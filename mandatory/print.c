@@ -1,26 +1,1 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: salee2 <salee2@student.42seoul.kr>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/03 17:40:02 by salee2            #+#    #+#             */
-/*   Updated: 2022/12/03 17:40:07 by salee2           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "philo.h"
-
-void print_state(ll base_usec, int nth_philo, enum e_tstate state)
-{
-	const char *state_to_str[5] = {"is thinking", "has taken a fork",
-								   "is eating", "is sleeping", "died"};
-	const ll cur_usec = get_usec();
-
-	if (cur_usec == -1LL)
-		return ;
-	ll time_stamp = cur_usec - base_usec;
-	printf("%lld %d %s\n", time_stamp, nth_philo + 1,
-		   state_to_str[state]);
-}
+/* ************************************************************************** *//*                                                                            *//*                                                        :::      ::::::::   *//*   print.c                                            :+:      :+:    :+:   *//*                                                    +:+ +:+         +:+     *//*   By: salee2 <salee2@student.42seoul.kr>         +#+  +:+       +#+        *//*                                                +#+#+#+#+#+   +#+           *//*   Created: 2022/12/03 17:40:02 by salee2            #+#    #+#             *//*   Updated: 2022/12/03 17:40:07 by salee2           ###   ########.fr       *//*                                                                            *//* ************************************************************************** */#include "philo.h"int	print_state(t_philo *philo, t_common_philo *common, enum e_tstate state){	const char	*state_to_str[5] = {"is thinking", "has taken a fork", \	"is eating", "is sleeping", "died"};	const t_ll	time_stamp = get_usec() - common->base_usec;	pthread_mutex_lock(&common->end_mtx);	if (common->is_end)	{		pthread_mutex_unlock(&common->end_mtx);		if (state == EAT || state == FORK)		{			pthread_mutex_unlock(&common->fork_mtx[philo->left_fork]);			pthread_mutex_unlock(&common->fork_mtx[philo->right_fork]);		}		return (EXIT_FAILURE);	}	else	{		printf("%lld %d %s\n", time_stamp / 1000LL, philo->nth_philo, \		state_to_str[state]);		if (state == DIE)			common->is_end = TRUE;	}	pthread_mutex_unlock(&common->end_mtx);	return (EXIT_SUCCESS);}

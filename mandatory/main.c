@@ -14,16 +14,13 @@
 
 int	main(int argc, char *argv[])
 {
-	t_philo				*philo;
-	t_common_philo		common_philo;
-	t_watcher			*watcher;
+	t_philo			*philo;
+	t_common_philo	common;
 
-	if (init_common_philo(argc, argv, &common_philo))
+	if (init_common_philo(argc, argv, &common))
 		return (EXIT_FAILURE);
 	philo = NULL;
-	watcher = NULL;
-	if (create_thread(&common_philo, philo, watcher))
+	if (create_thread(philo, &common))
 		return (EXIT_FAILURE);
-	usleep(common_philo.number_of_philosophers * 500);
 	return (0);
 }

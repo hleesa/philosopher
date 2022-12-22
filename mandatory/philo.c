@@ -12,54 +12,58 @@
 
 #include "philo.h"
 
-void	think_philo(t_philo *philo, t_common_philo *common_philo)
+int	think_philo(t_philo *philo, t_common_philo *common)
 {
-	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, THINK);
+	return (print_state(philo, common, THINK));
 }
 
-void	eat_philo(t_philo *philo, t_common_philo *common_philo)
+int	eat_philo(t_philo *philo, t_common_philo *common)
 {
-	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->left_fork]);
-	pthread_mutex_lock(&common_philo->chopstick_mtx[philo->right_fork]);
-
-	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
-	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, FORK);
-
-	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, EAT);
-
+	pthread_mutex_lock(&common->fork_mtx[philo->left_fork]);
+	pthread_mutex_lock(&common->fork_mtx[philo->right_fork]);
+	if (print_state(philo, common, FORK))
+		return (EXIT_FAILURE);
+	if (print_state(philo, common, FORK))
+		return (EXIT_FAILURE);
+	if (print_state(philo, common, EAT))
+		return (EXIT_FAILURE);
 	pthread_mutex_lock(&philo->last_eat_mtx);
 	philo->last_eat_usec = get_usec() + philo->error_usec;
 	pthread_mutex_unlock(&philo->last_eat_mtx);
-
-	my_usleep(common_philo->time_to_eat);
-
+	my_usleep(common->time_to_eat);
 	pthread_mutex_lock(&philo->num_of_eat_mtx);
 	++philo->num_of_eat;
 	pthread_mutex_unlock(&philo->num_of_eat_mtx);
-
-	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->left_fork]);
-	pthread_mutex_unlock(&common_philo->chopstick_mtx[philo->right_fork]);
-
-}
-void	sleep_philo(t_philo *philo, t_common_philo *common_philo)
-{
-	print_state(common_philo->base_usec + philo->error_usec, philo->nth_philo, SLEEP);
-	my_usleep(common_philo->time_to_sleep);
+	pthread_mutex_unlock(&common->fork_mtx[philo->left_fork]);
+	pthread_mutex_unlock(&common->fork_mtx[philo->right_fork]);
+	return (EXIT_SUCCESS);
 }
 
-void *life_of_philo(void *arg)
+int	sleep_philo(t_philo *philo, t_common_philo *common)
 {
-	t_philo *philo = arg;
-	t_common_philo *common_philo = philo->common_philo;
+	if (print_state(philo, common, SLEEP))
+		return (EXIT_FAILURE);
+	my_usleep(common->time_to_sleep);
+	return (EXIT_SUCCESS);
+}
 
+void	*life_of_philo(void *arg)
+{
+	t_philo			*philo;
+	t_common_philo	*common;
+
+	philo = arg;
+	common = philo->common;
 	while (TRUE)
 	{
-		think_philo(philo, common_philo);
-		eat_philo(philo, common_philo);
-
-		sleep_philo(philo, common_philo);
-		philo->error_usec += (get_usec() - common_philo->base_usec) % 222;
-
-//		printf("p[%d].error_usec:%lld, cur_usec:%lld\n", philo->nth_philo, philo->error_usec, get_usec() -common_philo->base_usec);
+		if (think_philo(philo, common))
+			return (NULL);
+		philo->saved_usec = get_usec();
+		if (eat_philo(philo, common))
+			return (NULL);
+		if (sleep_philo(philo, common))
+			return (NULL);
+		philo->error_usec += (get_usec() - philo->saved_usec
+				- common->time_to_sleep - common->time_to_eat);
 	}
 }

@@ -27,7 +27,6 @@ MANDA_SRCS = \
      thread \
      time \
      watcher \
-     watcher_thread \
 
 BONUS_SRCS = \
      env \

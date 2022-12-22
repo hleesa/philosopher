@@ -43,12 +43,12 @@ t_bool	is_right_arg(int argc, char *argv[])
 t_common_philo	input_args(int argc, char *argv[])
 {
 	t_common_philo	ret;
-	ll				*pptr;
+	t_ll			*pptr;
 	int				i;
 	const int		ofs = 1;
 
 	memset(&ret, -1, sizeof(t_common_philo));
-	pptr = (void*)&ret;
+	pptr = (void *)&ret;
 	i = 0;
 	pptr[i] = ft_atoll(argv[i + ofs]);
 	while (++i + ofs < MANDA)
