@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <unistd.h>
 # include <sys/time.h>
@@ -20,6 +20,7 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <semaphore.h>
 
 typedef int			t_bool;
 typedef long long	t_ll;
@@ -53,23 +54,15 @@ typedef struct s_common_philo
 	t_ll			time_to_sleep;
 	t_ll			number_of_times_each_philosopher_must_eat;
 	t_ll			base_usec;
-	t_bool			is_end;
-	pthread_mutex_t	end_mtx;
-	pthread_mutex_t	*fork_mtx;
 }	t_common_philo;
 
 typedef struct s_philo
 {
 	int				nth_philo;
-	int				left_fork;
-	int				right_fork;
 	int				num_of_eat;
 	t_ll			last_eat_usec;
 	t_ll			error_usec;
 	t_ll			saved_usec;
-	pthread_t		tid;
-	pthread_mutex_t	last_eat_mtx;
-	pthread_mutex_t	num_of_eat_mtx;
 	t_common_philo	*common;
 }	t_philo;
 
@@ -90,4 +83,4 @@ int				create_thread(t_philo *philo, t_common_philo *common);
 void			my_usleep(t_ll usec);
 t_ll			get_usec(void);
 
-#endif //PHILO_H
+#endif //PHILO_BONUS_H

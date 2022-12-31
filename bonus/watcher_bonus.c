@@ -21,14 +21,11 @@ t_bool	is_time_to_die(t_philo *philo, t_common_philo *common)
 	i = -1;
 	while (++i < i_end)
 	{
-		pthread_mutex_lock(&philo[i].last_eat_mtx);
 		if (get_usec() > (time_to_die + philo[i].last_eat_usec))
 		{
 			print_state(philo, common, DIE);
-			pthread_mutex_unlock(&philo[i].last_eat_mtx);
 			return (TRUE);
 		}
-		pthread_mutex_unlock(&philo[i].last_eat_mtx);
 	}
 	return (FALSE);
 }
@@ -43,17 +40,11 @@ t_bool	is_time_to_finish_eating(t_philo *philo, t_common_philo *common)
 	i = -1;
 	while (++i < i_end)
 	{
-		pthread_mutex_lock(&philo[i].num_of_eat_mtx);
 		if (philo[i].num_of_eat < num_of_must_eat)
 		{
-			pthread_mutex_unlock(&philo[i].num_of_eat_mtx);
 			return (FALSE);
 		}
-		pthread_mutex_unlock(&philo[i].num_of_eat_mtx);
 	}
-	pthread_mutex_lock(&common->end_mtx);
-	common->is_end = TRUE;
-	pthread_mutex_unlock(&common->end_mtx);
 	return (TRUE);
 }
 

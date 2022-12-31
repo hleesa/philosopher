@@ -19,6 +19,16 @@ int	main(int argc, char *argv[])
 
 	if (init_common_philo(argc, argv, &common))
 		return (EXIT_FAILURE);
+	sem_t *fork = sem_open("/myfork", O_CREAT, 0660, common.number_of_philosophers);
+	if (fork == SEM_FAILED)
+	{
+		perror("sem_open");
+		return EXIT_FAILURE;
+	}
+	for (int i = 1; i <= common.number_of_philosophers; ++i)
+	{
+
+	}
 	philo = NULL;
 	if (create_thread(philo, &common))
 		return (EXIT_FAILURE);

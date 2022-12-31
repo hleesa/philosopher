@@ -29,14 +29,8 @@ int	init_philo_thread(t_philo *philo, t_common_philo *common)
 	while (++i < i_end)
 	{
 		philo[i].nth_philo = i + 1;
-		philo[i].left_fork = i;
-		philo[i].right_fork = (i + 1) % i_end;
 		philo[i].num_of_eat = 0;
 		philo[i].last_eat_usec = get_usec();
-		if (pthread_mutex_init(&philo[i].last_eat_mtx, NULL))
-			return (EXIT_FAILURE);
-		if (pthread_mutex_init(&philo[i].num_of_eat_mtx, NULL))
-			return (EXIT_FAILURE);
 		philo[i].common = common;
 	}
 	return (EXIT_SUCCESS);
