@@ -72,5 +72,7 @@ int	life_of_watcher(t_philo *philo, t_common_philo *common)
 	}
 	if (join_philo_thread(philo, common->number_of_philosophers))
 		return (EXIT_FAILURE);
+	free(philo);
+	free(common->fork_mtx);
 	return (EXIT_SUCCESS);
 }

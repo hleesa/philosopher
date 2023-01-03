@@ -16,19 +16,29 @@ int	main(int argc, char *argv[])
 {
 	t_philo			*philo;
 	t_common_philo	common;
+	pid_t			pid;
 
 	if (init_common_philo(argc, argv, &common))
 		return (EXIT_FAILURE);
-	sem_t *fork = sem_open("/myfork", O_CREAT, 0660, common.number_of_philosophers);
-	if (fork == SEM_FAILED)
+	sem_t *forks = sem_open("/forks", O_CREAT, 0660, common.number_of_philosophers);
+	if (forks == SEM_FAILED)
 	{
-		perror("sem_open");
 		return EXIT_FAILURE;
 	}
 	for (int i = 1; i <= common.number_of_philosophers; ++i)
 	{
-
+		pid = fork();
+		exit_if_fork_error(pid);
+		if (pid == 0)
+		{
+			// set philo info
+		}
+		else
+		{
+			// wait
+		}
 	}
+	// life of philo
 	philo = NULL;
 	if (create_thread(philo, &common))
 		return (EXIT_FAILURE);

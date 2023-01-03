@@ -83,4 +83,7 @@ int				create_thread(t_philo *philo, t_common_philo *common);
 void			my_usleep(t_ll usec);
 t_ll			get_usec(void);
 
+
+void	exit_if_fork_error(pid_t pid);
+
 #endif //PHILO_BONUS_H
