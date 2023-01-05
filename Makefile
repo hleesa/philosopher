@@ -37,7 +37,6 @@ BONUS_SRCS = \
      main \
      philo \
      print \
-     thread \
      time \
      watcher \
 
@@ -63,7 +62,7 @@ clean:
 	$(RM) $(MANDA_OBJS) $(BONUS_OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(BONUS)
 
 re: fclean
 	make all

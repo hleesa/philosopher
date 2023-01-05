@@ -77,7 +77,6 @@ int				create_philo_thread(t_philo *philo, t_common_philo *common);
 int				join_philo_thread(t_philo *philo, int i_end);
 int				print_state(t_philo *philo, t_common_philo *common, \
 enum e_tstate state);
-int				life_of_watcher(t_philo *philo, t_common_philo *common);
 int				create_thread(t_philo *philo, t_common_philo *common);
 void			my_usleep(t_ll usec);
 t_ll			get_usec(void);
@@ -85,5 +84,7 @@ t_ll			get_usec(void);
 
 void	exit_if_fork_error(pid_t pid);
 
-void	*life_of_philo(t_philo *philo, t_common_philo *cmmon)
+void	*life_of_philo(t_philo *philo, t_common_philo *common);
+void *life_of_watcher(void *arg);
+
 #endif //PHILO_BONUS_H

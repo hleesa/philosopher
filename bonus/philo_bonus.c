@@ -19,7 +19,7 @@ int	think_philo(t_philo *philo, t_common_philo *common)
 
 int	eat_philo(t_philo *philo, t_common_philo *common)
 {
-	sem_t forks = sem_open("/forks", 0);
+	sem_t *forks = sem_open("/forks", 0);
 
 	if(forks == SEM_FAILED)
 		exit(EXIT_FAILURE);

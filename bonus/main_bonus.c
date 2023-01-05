@@ -38,12 +38,7 @@ int	main(int argc, char *argv[])
 			philo.num_of_eat = 0;
 			philo.last_eat_usec = get_usec();
 			philo.common = &common;
-			pthread_t	tid;
-			if (pthread_create(tid, NULL, life_of_watcher, (void *)(&philo)))
-				return (EXIT_FAILURE);
-			life_of_philo(&philo, &common);
-			if (pthread_join(tid, NULL))
-				return (EXIT_FAILURE);
+			printf("%d\n", getpid());
 		}
 		else
 		{
@@ -51,6 +46,14 @@ int	main(int argc, char *argv[])
 			waitpid(-1, 0, 0);
 		}
 	}
+	printf("nth:%d\n", philo.nth_philo);
+
 	// life of philo
+//	pthread_t	tid;
+//	if (pthread_create(&tid, NULL, life_of_watcher, (void *)(&philo)))
+//		return (EXIT_FAILURE);
+	life_of_philo(&philo, &common);
+//	if (pthread_join(tid, NULL))
+//		return (EXIT_FAILURE);
 	return (0);
 }
