@@ -71,7 +71,6 @@ t_common_philo	input_args(int argc, char *argv[]);
 int				init_common_philo(int argc, char *argv[], \
 t_common_philo *common);
 long long		ft_atoll(const char *str);
-void			*life_of_philo(void *arg);
 int				malloc_philo_thread(t_philo **philo, int size);
 int				init_philo_thread(t_philo *philo, t_common_philo *common);
 int				create_philo_thread(t_philo *philo, t_common_philo *common);
@@ -86,4 +85,5 @@ t_ll			get_usec(void);
 
 void	exit_if_fork_error(pid_t pid);
 
+void	*life_of_philo(t_philo *philo, t_common_philo *cmmon)
 #endif //PHILO_BONUS_H

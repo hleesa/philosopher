@@ -14,9 +14,10 @@
 
 int	main(int argc, char *argv[])
 {
-	t_philo			*philo;
+	t_philo			philo;
 	t_common_philo	common;
 	pid_t			pid;
+	int 			i;
 
 	if (init_common_philo(argc, argv, &common))
 		return (EXIT_FAILURE);
@@ -25,22 +26,31 @@ int	main(int argc, char *argv[])
 	{
 		return EXIT_FAILURE;
 	}
-	for (int i = 1; i <= common.number_of_philosophers; ++i)
+	i = -1;
+	while( ++i < common.number_of_philosophers)
 	{
 		pid = fork();
 		exit_if_fork_error(pid);
 		if (pid == 0)
 		{
 			// set philo info
+			philo.nth_philo = i + 1;
+			philo.num_of_eat = 0;
+			philo.last_eat_usec = get_usec();
+			philo.common = &common;
+			pthread_t	tid;
+			if (pthread_create(tid, NULL, life_of_watcher, (void *)(&philo)))
+				return (EXIT_FAILURE);
+			life_of_philo(&philo, &common);
+			if (pthread_join(tid, NULL))
+				return (EXIT_FAILURE);
 		}
 		else
 		{
 			// wait
+			waitpid(-1, 0, 0);
 		}
 	}
 	// life of philo
-	philo = NULL;
-	if (create_thread(philo, &common))
-		return (EXIT_FAILURE);
 	return (0);
 }

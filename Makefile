@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 NAME		= philo
+BONUS		= philo_bonus
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
@@ -29,15 +30,16 @@ MANDA_SRCS = \
      watcher \
 
 BONUS_SRCS = \
-     env \
+     arg \
+     common \
      exit \
-     heredoc \
+     ft_atoll \
      main \
-     mktemp \
-     pipex \
-     redirect_pipe \
-     redirect_stdio \
-     run \
+     philo \
+     print \
+     thread \
+     time \
+     watcher \
 
 MANDA_FILE = $(addsuffix .c, $(addprefix mandatory/, $(MANDA_SRCS:.c=.o)))
 BONUS_FILE = $(addsuffix _bonus.c, $(addprefix bonus/, $(BONUS_SRCS:.c=.o)))
@@ -46,8 +48,12 @@ MANDA_OBJS = $(MANDA_FILE:c=o)
 BONUS_OBJS = $(BONUS_FILE:c=o)
 
 all: $(NAME)
+bonus : $(BONUS)
 
 $(NAME): $(MANDA_OBJS)
+	$(CC) $(CFLAGS) -o $@ $^
+
+$(BONUS) : $(BONUS_OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
 %o: %c
