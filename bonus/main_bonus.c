@@ -16,8 +16,8 @@ int	main(int argc, char *argv[])
 {
 	t_philo			philo;
 	t_common_philo	common;
-	pid_t			pid;
-	int 			i;
+	pid_t	pid;
+	int	i;
 
 	if (init_common_philo(argc, argv, &common))
 		return (EXIT_FAILURE);
@@ -25,7 +25,7 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	sem_t *forks = sem_open("/forks", O_CREAT, 0660, common.number_of_philosophers);
 	if (forks == SEM_FAILED)
-		return EXIT_FAILURE;
+		return (EXIT_FAILURE);
 	i = -1;
 	while( ++i < common.number_of_philosophers)
 	{
@@ -43,6 +43,7 @@ int	main(int argc, char *argv[])
 		else
 			usleep(21);
 	}
+
 	while (1)
 		;
 	return (0);

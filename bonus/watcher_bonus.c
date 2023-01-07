@@ -34,10 +34,10 @@ t_bool	is_time_to_finish_eating(t_philo *philo, t_common_philo *common)
 	return (TRUE);
 }
 
-void *life_of_watcher(void *arg)
+void	*life_of_watcher(void* arg)
 {
-	t_philo			*philo;
-	t_common_philo	*common;
+	t_philo *philo;
+	t_common_philo *common;
 
 	philo = arg;
 	common = philo->common;
@@ -52,5 +52,7 @@ void *life_of_watcher(void *arg)
 		}
 		usleep(300);
 	}
+	if (pthread_join(philo->tid, NULL))
+		return (NULL);
 	return (NULL);
 }

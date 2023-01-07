@@ -33,6 +33,7 @@ int	eat_philo(t_philo *philo, t_common_philo *common)
 		return (EXIT_FAILURE);
 	if (print_state(philo, common, EAT))
 		return (EXIT_FAILURE);
+
 	philo->last_eat_usec = get_usec() + philo->error_usec;
 	my_usleep(common->time_to_eat);
 	++philo->num_of_eat;
@@ -53,8 +54,13 @@ int	sleep_philo(t_philo *philo, t_common_philo *common)
 	return (EXIT_SUCCESS);
 }
 
-void	*life_of_philo(t_philo *philo, t_common_philo *common)
+void	*life_of_philo(void *arg)
 {
+	t_philo			*philo;
+	t_common_philo	*common;
+
+	philo = arg;
+	common = philo->common;
 	if (common->number_of_philosophers == 1)
 	{
 		print_state(philo, common, FORK);
@@ -72,6 +78,6 @@ void	*life_of_philo(t_philo *philo, t_common_philo *common)
 		if (sleep_philo(philo, common))
 			return (NULL);
 		philo->error_usec += (get_usec() - philo->saved_usec
-				- common->time_to_sleep - common->time_to_eat);
+							  - common->time_to_sleep - common->time_to_eat);
 	}
 }

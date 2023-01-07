@@ -63,6 +63,7 @@ typedef struct s_philo
 	t_ll			last_eat_usec;
 	t_ll			error_usec;
 	t_ll			saved_usec;
+	pthread_t		tid;
 	t_common_philo	*common;
 }	t_philo;
 
@@ -84,7 +85,8 @@ t_ll			get_usec(void);
 
 void	exit_if_fork_error(pid_t pid);
 
-void	*life_of_philo(t_philo *philo, t_common_philo *common);
-void *life_of_watcher(void *arg);
+int	create_thread(t_philo *philo, t_common_philo *common);
+void	*life_of_philo(void *arg);
+void	*life_of_watcher(void* arg);
 
 #endif //PHILO_BONUS_H

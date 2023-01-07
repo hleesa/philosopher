@@ -17,9 +17,10 @@ CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -f
 
-MANDA_SRCS = \
+BONUS_SRCS = \
      arg \
      common \
+     exit \
      ft_atoll \
      main \
      philo \
@@ -29,14 +30,15 @@ MANDA_SRCS = \
      time \
      watcher \
 
-BONUS_SRCS = \
+MANDA_SRCS = \
      arg \
      common \
-     exit \
      ft_atoll \
      main \
      philo \
+     philo_thread \
      print \
+     thread \
      time \
      watcher \
 
