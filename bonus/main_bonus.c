@@ -21,11 +21,11 @@ int	main(int argc, char *argv[])
 
 	if (init_common_philo(argc, argv, &common))
 		return (EXIT_FAILURE);
+	if (sem_unlink("/forks") == -1)
+		return (EXIT_FAILURE);
 	sem_t *forks = sem_open("/forks", O_CREAT, 0660, common.number_of_philosophers);
 	if (forks == SEM_FAILED)
-	{
 		return EXIT_FAILURE;
-	}
 	i = -1;
 	while( ++i < common.number_of_philosophers)
 	{
@@ -38,22 +38,12 @@ int	main(int argc, char *argv[])
 			philo.num_of_eat = 0;
 			philo.last_eat_usec = get_usec();
 			philo.common = &common;
-			printf("%d\n", getpid());
+			life_of_philo(&philo, &common);
 		}
 		else
-		{
-			// wait
-			waitpid(-1, 0, 0);
-		}
+			usleep(21);
 	}
-	printf("nth:%d\n", philo.nth_philo);
-
-	// life of philo
-//	pthread_t	tid;
-//	if (pthread_create(&tid, NULL, life_of_watcher, (void *)(&philo)))
-//		return (EXIT_FAILURE);
-	life_of_philo(&philo, &common);
-//	if (pthread_join(tid, NULL))
-//		return (EXIT_FAILURE);
+	while (1)
+		;
 	return (0);
 }

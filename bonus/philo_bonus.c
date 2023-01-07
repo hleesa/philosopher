@@ -23,9 +23,10 @@ int	eat_philo(t_philo *philo, t_common_philo *common)
 
 	if(forks == SEM_FAILED)
 		exit(EXIT_FAILURE);
-	if (sem_wait(forks) == -1 || sem_wait(forks) == -1)
+	if (sem_wait(forks) == -1)
 		exit(EXIT_FAILURE);
-
+	if (sem_wait(forks) == -1)
+		exit(EXIT_FAILURE);
 	if (print_state(philo, common, FORK))
 		return (EXIT_FAILURE);
 	if (print_state(philo, common, FORK))
@@ -36,7 +37,9 @@ int	eat_philo(t_philo *philo, t_common_philo *common)
 	my_usleep(common->time_to_eat);
 	++philo->num_of_eat;
 
-	if (sem_post(forks) == -1 || sem_post(forks) == -1)
+	if (sem_post(forks) == -1)
+		exit(EXIT_FAILURE);
+	if (sem_post(forks) == -1)
 		exit(EXIT_FAILURE);
 
 	return (EXIT_SUCCESS);
