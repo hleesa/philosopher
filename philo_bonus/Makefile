@@ -29,7 +29,7 @@ SRCS = \
 
 FILE = $(addsuffix _bonus.c, $(SRCS:.c=.o))
 
-OBJS = $(FILE:.c=.o)
+OBJS = $(FILE:c=o)
 
 all: $(NAME)
 

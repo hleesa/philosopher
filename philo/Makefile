@@ -30,7 +30,7 @@ SRCS = \
 
 FILE = $(addsuffix .c, $(SRCS:.c=.o))
 
-OBJS = $(FILE:.c=.o)
+OBJS = $(FILE:c=o)
 
 all: $(NAME)
 
