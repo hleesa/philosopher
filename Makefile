@@ -24,9 +24,7 @@ BONUS_SRCS = \
      ft_atoll \
      main \
      philo \
-     philo_thread \
      print \
-     thread \
      time \
      watcher \
 

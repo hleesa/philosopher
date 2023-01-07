@@ -54,13 +54,8 @@ int	sleep_philo(t_philo *philo, t_common_philo *common)
 	return (EXIT_SUCCESS);
 }
 
-void	*life_of_philo(void *arg)
+void	*life_of_philo(t_philo *philo, t_common_philo *common)
 {
-	t_philo			*philo;
-	t_common_philo	*common;
-
-	philo = arg;
-	common = philo->common;
 	if (common->number_of_philosophers == 1)
 	{
 		print_state(philo, common, FORK);

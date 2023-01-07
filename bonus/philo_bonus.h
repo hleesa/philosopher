@@ -86,7 +86,7 @@ t_ll			get_usec(void);
 void	exit_if_fork_error(pid_t pid);
 
 int	create_thread(t_philo *philo, t_common_philo *common);
-void	*life_of_philo(void *arg);
 void	*life_of_watcher(void* arg);
+void	*life_of_philo(t_philo *philo, t_common_philo *common);
 
 #endif //PHILO_BONUS_H

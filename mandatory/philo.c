@@ -71,6 +71,6 @@ void	*life_of_philo(void *arg)
 		if (sleep_philo(philo, common))
 			return (NULL);
 		philo->error_usec += (get_usec() - philo->saved_usec
-				- common->time_to_sleep - common->time_to_eat);
+							  - common->time_to_sleep - common->time_to_eat);
 	}
 }
