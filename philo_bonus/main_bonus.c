@@ -38,10 +38,14 @@ int	main(int argc, char *argv[])
 			philo.num_of_eat = 0;
 			philo.last_eat_usec = get_usec();
 			philo.common = &common;
+			pthread_t tid;
+			pthread_create(&tid, NULL, life_of_watcher, &philo);
 			life_of_philo(&philo, &common);
 		}
 		else
+		{
 			usleep(21);
+		}
 	}
 
 	while (1)

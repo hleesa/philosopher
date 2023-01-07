@@ -11,24 +11,12 @@
 # **************************************************************************** #
 
 NAME		= philo
-BONUS		= philo_bonus
 
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror
 RM			= rm -f
 
-BONUS_SRCS = \
-     arg \
-     common \
-     exit \
-     ft_atoll \
-     main \
-     philo \
-     print \
-     time \
-     watcher \
-
-MANDA_SRCS = \
+SRCS = \
      arg \
      common \
      ft_atoll \
@@ -40,31 +28,25 @@ MANDA_SRCS = \
      time \
      watcher \
 
-MANDA_FILE = $(addsuffix .c, $(addprefix mandatory/, $(MANDA_SRCS:.c=.o)))
-BONUS_FILE = $(addsuffix _bonus.c, $(addprefix bonus/, $(BONUS_SRCS:.c=.o)))
+FILE = $(addsuffix .c, $(SRCS:.c=.o))
 
-MANDA_OBJS = $(MANDA_FILE:c=o)
-BONUS_OBJS = $(BONUS_FILE:c=o)
+OBJS = $(FILE:.c=.o)
 
 all: $(NAME)
-bonus : $(BONUS)
 
-$(NAME): $(MANDA_OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
-
-$(BONUS) : $(BONUS_OBJS)
+$(NAME): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
 %o: %c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	$(RM) $(MANDA_OBJS) $(BONUS_OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME) $(BONUS)
+	$(RM) $(NAME)
 
 re: fclean
 	make all
 
-.PHONY: all bonus clean fclean re
+.PHONY: NAME all clean fclean re
