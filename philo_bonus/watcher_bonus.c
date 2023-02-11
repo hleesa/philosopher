@@ -16,8 +16,7 @@ void	exit_if_time_to_die(t_philo *philo, t_common_philo *common, \
 sem_t *last_eat, sem_t *print)
 {
 	semaphore_wait(last_eat);
-	if (get_usec() / 1000LL > (common->time_to_die + philo->last_eat_usec) \
-	/ 1000LL)
+	if (get_usec() > common->time_to_die + philo->last_eat_usec)
 	{
 		print_state(philo, common, DIE, print);
 		semaphore_post(last_eat);
@@ -52,8 +51,8 @@ void	*life_of_watcher(void *arg)
 	philo = arg;
 	common = philo->common;
 	sems.print = semaphore_get("/print");
-	sems.last_eat = semaphore_get(philo->last_eat_sem_name);
-	sems.num_of_eat = semaphore_get(philo->num_of_eat_sem_name);
+	sems.last_eat = semaphore_get("/last_eat");
+	sems.num_of_eat = semaphore_get("/num_of_eat");
 	while (TRUE)
 	{
 		if (common->number_of_times_each_philosopher_must_eat != -1)

@@ -12,8 +12,7 @@
 
 #include "philo_bonus.h"
 
-void	create_philo(t_philo *philo, t_common_philo *common, pid_t **pids, \
-t_sem_name *sem_name)
+void	create_philo(t_philo *philo, t_common_philo *common, pid_t **pids)
 {
 	int			i;
 	pthread_t	tid;
@@ -30,8 +29,6 @@ t_sem_name *sem_name)
 			philo->num_of_eat = 0;
 			philo->last_eat_usec = get_usec();
 			philo->error_usec = 0LL;
-			philo->last_eat_sem_name = sem_name->last_eat_sem_names[i];
-			philo->num_of_eat_sem_name = sem_name->num_of_eat_sem_names[i];
 			pthread_create(&tid, NULL, life_of_watcher, philo);
 			pthread_detach(tid);
 			life_of_philo(philo, common);

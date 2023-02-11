@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_bonus.c                                      :+:      :+:    :+:   */
+/*   life_of_philo_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: salee2 <salee2@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 18:25:33 by salee2            #+#    #+#             */
-/*   Updated: 2023/01/07 18:25:35 by salee2           ###   ########.fr       */
+/*   Created: 2023/02/11 14:30:44 by salee2            #+#    #+#             */
+/*   Updated: 2023/02/11 14:30:46 by salee2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ void	think_philo(t_philo *philo, t_common_philo *common, sem_t *print)
 	print_state(philo, common, THINK, print);
 }
 
-void	eat_philo(t_philo *philo, t_common_philo *common, t_sems *sems)
+void	eat_philo(t_philo *philo, t_common_philo *common, t_sems *sems, \
+t_ll *saved_usec)
 {
 	semaphore_wait(sems->forks);
 	semaphore_wait(sems->forks);
-	philo->saved_usec = get_usec();
+	*saved_usec = get_usec();
 	print_state(philo, common, FORK, sems->print);
 	print_state(philo, common, FORK, sems->print);
 	print_state(philo, common, EAT, sems->print);
@@ -45,11 +46,12 @@ void	sleep_philo(t_philo *philo, t_common_philo *common, sem_t *print)
 void	life_of_philo(t_philo *philo, t_common_philo *common)
 {
 	t_sems	sems;
+	t_ll	saved_usec;
 
 	sems.forks = semaphore_get("/forks");
 	sems.print = semaphore_get("/print");
-	sems.last_eat = semaphore_get(philo->last_eat_sem_name);
-	sems.num_of_eat = semaphore_get(philo->num_of_eat_sem_name);
+	sems.last_eat = semaphore_get("/last_eat");
+	sems.num_of_eat = semaphore_get("/num_of_eat");
 	if (common->number_of_philosophers == 1)
 	{
 		print_state(philo, common, FORK, sems.print);
@@ -60,9 +62,9 @@ void	life_of_philo(t_philo *philo, t_common_philo *common)
 	while (TRUE)
 	{
 		think_philo(philo, common, sems.print);
-		eat_philo(philo, common, &sems);
+		eat_philo(philo, common, &sems, &saved_usec);
 		sleep_philo(philo, common, sems.print);
-		philo->error_usec += (get_usec() - philo->saved_usec
+		philo->error_usec += (get_usec() - saved_usec
 				- common->time_to_sleep - common->time_to_eat);
 	}
 }

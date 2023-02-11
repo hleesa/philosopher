@@ -21,12 +21,10 @@ PHILO_SRCS = \
      common \
      error \
      ft_atoll \
-     ft_itoa \
      life_of_philo \
      main \
      philo \
      print \
-     sem_name \
      semaphore \
      semaphore_exit \
      time \

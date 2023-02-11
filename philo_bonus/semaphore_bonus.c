@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   semaphore.c                                        :+:      :+:    :+:   */
+/*   semaphore_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: salee2 <salee2@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/21 15:41:42 by salee2            #+#    #+#             */
-/*   Updated: 2023/01/21 15:41:43 by salee2           ###   ########.fr       */
+/*   Created: 2023/02/11 14:31:12 by salee2            #+#    #+#             */
+/*   Updated: 2023/02/11 14:31:13 by salee2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,12 @@ void	init_semaphore(char *name, int value)
 	return ;
 }
 
-void	init_semaphores(t_sem_name *sem_name, t_ll num_of_fork)
+void	init_semaphores(t_ll num_of_fork)
 {
-	int	i;
-
-	i = -1;
-	while (++i < num_of_fork)
-	{
-		init_semaphore(sem_name->last_eat_sem_names[i], 1);
-		init_semaphore(sem_name->num_of_eat_sem_names[i], 1);
-	}
 	init_semaphore("/forks", num_of_fork);
 	init_semaphore("/print", 1);
+	init_semaphore("/last_eat", 1);
+	init_semaphore("/num_of_eat", 1);
 	return ;
 }
 
@@ -50,32 +44,20 @@ void	create_semaphore(char *name, int value)
 	return ;
 }
 
-void	create_semaphores(t_sem_name *sem_name, t_ll num_of_fork)
+void	create_semaphores(t_ll num_of_fork)
 {
-	int	i;
-
-	i = -1;
-	while (++i < num_of_fork)
-	{
-		create_semaphore(sem_name->last_eat_sem_names[i], 1);
-		create_semaphore(sem_name->num_of_eat_sem_names[i], 1);
-	}
 	create_semaphore("/forks", num_of_fork);
 	create_semaphore("/print", 1);
+	create_semaphore("/last_eat", 1);
+	create_semaphore("/num_of_eat", 1);
 	return ;
 }
 
-void	delete_semaphores(t_sem_name *sem_name, t_ll num_of_fork)
+void	delete_semaphores(void)
 {
-	int	i;
-
-	i = -1;
-	while (++i < num_of_fork)
-	{
-		semaphore_unlink(sem_name->last_eat_sem_names[i]);
-		semaphore_unlink(sem_name->num_of_eat_sem_names[i]);
-	}
 	semaphore_unlink("/forks");
 	semaphore_unlink("/print");
+	semaphore_unlink("/last_eat");
+	semaphore_unlink("/num_of_eat");
 	return ;
 }

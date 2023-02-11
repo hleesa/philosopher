@@ -23,9 +23,6 @@
 # include <semaphore.h>
 # include <signal.h>
 
-# define LAST_EAT 100000
-# define NUM_OF_EAT 200000
-
 typedef int			t_bool;
 typedef long long	t_ll;
 
@@ -73,18 +70,9 @@ typedef struct s_philo
 	int				num_of_eat;
 	t_ll			last_eat_usec;
 	t_ll			error_usec;
-	t_ll			saved_usec;
-	char			*last_eat_sem_name;
-	char			*num_of_eat_sem_name;
 	pthread_t		tid;
 	t_common_philo	*common;
 }	t_philo;
-
-typedef struct s_sem_name
-{
-	char	**last_eat_sem_names;
-	char	**num_of_eat_sem_names;
-}	t_sem_name;
 
 typedef struct s_sems
 {
@@ -103,16 +91,13 @@ long long		ft_atoll(const char *str);
 char			*ft_itoa(int n);
 void			life_of_philo(t_philo *philo, t_common_philo *common);
 void			create_philo(t_philo *philo, t_common_philo *common, \
-pid_t **pids, t_sem_name *sem_name);
+pid_t **pids);
 void			kill_philo(pid_t *pids, int num_of_philo);
 void			print_state(t_philo *philo, t_common_philo *common, \
 enum e_tstate state, sem_t *print);
-void			init_sem_names(t_sem_name *sem_name, int num_of_philo);
-void			create_sem_names(t_sem_name *sem_name, int num_of_philo);
-void			free_sem_name(t_sem_name *sem_name, int size);
-void			init_semaphores(t_sem_name *sem_name, t_ll num_of_fork);
-void			create_semaphores(t_sem_name *sem_name, t_ll num_of_fork);
-void			delete_semaphores(t_sem_name *sem_name, t_ll num_of_fork);
+void			init_semaphores(t_ll num_of_fork);
+void			create_semaphores(t_ll num_of_fork);
+void			delete_semaphores(void);
 void			semaphore_unlink(const char *name);
 void			semaphore_wait(sem_t *sem);
 void			semaphore_post(sem_t *sem);
