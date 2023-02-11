@@ -22,7 +22,7 @@ PHILO_SRCS = \
      ft_atoll \
      life_of_philo \
      main \
-     philo_thread \
+     philo \
      print \
      thread \
      time \
