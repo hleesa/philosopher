@@ -34,6 +34,8 @@ int	init_common_philo(int argc, char *argv[], t_common_philo *common)
 	if (!is_right_arg(argc, argv))
 		return (EXIT_FAILURE);
 	*common = input_args(argc, argv);
+	if (common->number_of_philosophers < 1)
+		return (EXIT_FAILURE);
 	common->base_usec = get_usec();
 	common->is_end = FALSE;
 	if (pthread_mutex_init(&common->end_mtx, NULL))
