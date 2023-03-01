@@ -20,7 +20,7 @@ void	init_common_philo(int argc, char *argv[], t_common_philo *common)
 		exit(EXIT_FAILURE);
 	}
 	*common = input_args(argc, argv);
-	if (common->number_of_philosophers < 0)
+	if (common->number_of_philosophers < 1)
 		exit(EXIT_FAILURE);
 	common->base_usec = get_usec();
 	return ;
