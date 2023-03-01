@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: salee2 <salee2@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 18:26:04 by salee2            #+#    #+#             */
-/*   Updated: 2023/01/07 18:26:05 by salee2           ###   ########.fr       */
+/*   Created: 2023/03/01 18:19:50 by salee2            #+#    #+#             */
+/*   Updated: 2023/03/01 18:19:50 by salee2           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 
 void	my_usleep(t_ll usec)
 {
