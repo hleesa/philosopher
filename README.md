@@ -3,6 +3,20 @@
 ## 소개
 이 프로젝트에서는 프로세스의 스레딩 기본 개념을 배우게 됩니다. 스레드를 생성하는 방법과 뮤텍스를 사용하는 방법을 학습하게 될 것입니다.
 
+## 프로그램 실행
+
+```bash
+git clone https://github.com/hleesa/philosopher.git
+```
+```bash
+cd philosopher/philo
+make
+./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+```
+```bash
+./philo 4 310 200 100
+```
+
 ## 기본 규칙
 - 프로젝트는 C 언어로 작성해야 합니다.
 - 함수는 예상치 않게 종료(세그멘테이션 폴트, 버스 에러, 더블 프리 등)되지 않아야 합니다. 그렇지 않으면 프로젝트는 비기능적인 것으로 간주되어 평가에서 0점을 받습니다.
@@ -64,4 +78,3 @@
 - 허용된 외부 함수: `memset`, `printf`, `malloc`, `free`, `write`, `fork`, `kill`, `exit`, `pthread_create`, `pthread_detach`, `pthread_join`, `usleep`, `gettimeofday`, `waitpid`, `sem_open`, `sem_close`, `sem_post`, `sem_wait`, `sem_unlink`
 - 라이브러리 사용: `libft` 사용 불가
 - 설명: 모든 포크는 테이블 중앙에 배치됩니다. 포크 상태는 메모리에 저장되지 않으며, 사용 가능한 포크 수는 세마포어로 표현됩니다. 각 철학자는 프로세스여야 하지만, 메인 프로세스는 철학자가 아니어야 합니다.
-- 
